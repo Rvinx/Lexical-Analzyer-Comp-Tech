@@ -93,5 +93,13 @@ def p_command_write_bad(p):
     '''command : WRITE error'''
     p[0] = "MALFORMED PRINT STATEMENT"
 
-# Stement untuk Nama Program
+# Statement untuk Nama Program
+def p_command_program(p):
+    '''command : PROGRAM variable SEMI_COLON'''
+    p[0] = ('PROGRAM', p[2], p[4])
+
+
+def p_command_program_bad(p):
+    '''command : PROGRAM variable SEMI_COLON'''
+    p[0] = "BAD EXPRESSION IN PROGRAM"
 
