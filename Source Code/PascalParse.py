@@ -85,21 +85,54 @@ def p_command_var_bad(p):
 
 # Statement untuk keyword write
 def p_command_write(p):
-    '''command : WRITE plist optend;'''
-    p[0] = ('WRITE', p[2], p[3])
+    '''command : WRITE OPEN_PARENT SINGLE_QUOTE expr SINGLE_QUOTE CLOSE_PAREN SEMI_COLON'''
+    p[0] = ('WRITE', p[4])
 
 
 def p_command_write_bad(p):
-    '''command : WRITE error'''
-    p[0] = "MALFORMED PRINT STATEMENT"
+    '''command : WRITE OPEN_PARENT SINGLE_QUOTE error SINGLE_QUOTE CLOSE_PAREN SEMI_COLON'''
+    p[0] = "MALFORMED WRITE STATEMENT"
 
 # Statement untuk Nama Program
 def p_command_program(p):
     '''command : PROGRAM variable SEMI_COLON'''
-    p[0] = ('PROGRAM', p[2], p[4])
+    p[0] = ('PROGRAM', p[2])
 
 
 def p_command_program_bad(p):
     '''command : PROGRAM variable SEMI_COLON'''
     p[0] = "BAD EXPRESSION IN PROGRAM"
 
+# Statement untuk Begin
+def p_command_begin(p):
+    '''command : BEGIN'''
+    p[0] = ('BEGIN')
+
+
+def p_command_begin_bad(p):
+    '''command : BEGIN'''
+    p[0] = "BAD EXPRESSION IN BEGIN"
+
+# Statement untuk Begin
+def p_command_end(p):
+    '''command : END DOT'''
+    p[0] = ('END', p[2])
+
+
+def p_command_end_bad(p):
+    '''command : END DOT'''
+    p[0] = "BAD EXPRESSION IN END"
+
+def p_error(p):
+    if not p:
+        print("SYNTAX ERROR AT EOF")
+
+bparser = yacc.yacc()
+
+
+def parse(data, debug=0):
+    bparser.error = 0
+    p = bparser.parse(data, debug=debug)
+    if bparser.error:
+        return None
+    return p
