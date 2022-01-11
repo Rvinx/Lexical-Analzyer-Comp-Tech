@@ -14,6 +14,7 @@ class PascalInterpreter:
             # pusyang
         }
 
+    def collect_data(self):
         self.data = []
         for lineno in self.stat:
             if self.prog[lineno][0] == 'DATA':
