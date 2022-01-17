@@ -75,18 +75,18 @@ def p_statement_newline(p):
 
 # Statement untuk keyword Var
 def p_command_var(p):
-    '''command : VAR variable EQUALS expr;'''
-    p[0] = ('VAR', p[2], p[4])
+    '''command : VAR ID EQUALS expr;'''
+    p[0] = ('VAR', p[2])
 
 
 def p_command_var_bad(p):
-    '''command : VAR variable EQUALS error'''
+    '''command : VAR ID EQUALS error'''
     p[0] = "BAD EXPRESSION IN VAR"
 
 # Statement untuk keyword write
 def p_command_write(p):
     '''command : WRITE OPEN_PARENT SINGLE_QUOTE expr SINGLE_QUOTE CLOSE_PAREN SEMI_COLON'''
-    p[0] = ('WRITE', p[4])
+    p[0] = ('WRITE', p[1], p[2], p[4], p[5], p[6])
 
 
 def p_command_write_bad(p):
@@ -95,12 +95,12 @@ def p_command_write_bad(p):
 
 # Statement untuk Nama Program
 def p_command_program(p):
-    '''command : PROGRAM variable SEMI_COLON'''
+    '''command : PROGRAM ID SEMI_COLON'''
     p[0] = ('PROGRAM', p[2])
 
 
 def p_command_program_bad(p):
-    '''command : PROGRAM variable SEMI_COLON'''
+    '''command : PROGRAM ID SEMI_COLON'''
     p[0] = "BAD EXPRESSION IN PROGRAM"
 
 # Statement untuk Begin
@@ -116,7 +116,7 @@ def p_command_begin_bad(p):
 # Statement untuk Begin
 def p_command_end(p):
     '''command : END DOT'''
-    p[0] = ('END', p[2])
+    p[0] = ('END', p[1])
 
 
 def p_command_end_bad(p):
