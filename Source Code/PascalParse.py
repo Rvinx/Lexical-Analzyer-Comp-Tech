@@ -95,12 +95,12 @@ def p_command_write_bad(p):
 
 # Statement writeln
 def p_command_writeln(p):
-    '''command : WRITELN OPEN_PARENT SINGLE_QUOTE expr SINGLE_QUOTE CLOSE_PAREN SEMI_COLON'''
+    '''command : WRITELN OPEN_PARENT expr CLOSE_PAREN SEMI_COLON'''
     p[0] = ('WRITELN', p[1], p[2], p[4], p[5], p[6])
 
 
 def p_command_writeln_bad(p):
-    '''command : WRITELN OPEN_PARENT SINGLE_QUOTE error SINGLE_QUOTE CLOSE_PAREN SEMI_COLON'''
+    '''command : WRITELN OPEN_PARENT CLOSE_PAREN SEMI_COLON'''
     p[0] = "MALFORMED WRITELN STATEMENT"
 
 # Statement untuk Nama Program

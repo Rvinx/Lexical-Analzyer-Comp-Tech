@@ -43,17 +43,17 @@ def t_error(t):
     print("Illegal character %s" % t.value[0])
     t.lexer.skip(1)
 
-lexer = lex.lex()
+lexer = lex.lex(debug = 0)
 
-data = 'PROGRAM HELLOWORLD ;\n'
-data = data + 'BEGIN \n'
-data = data + "\t WRITELN('Hello, World!'); \n"
-data = data + 'END.' 
-lexer.input(data)
+# data = 'PROGRAM HELLOWORLD ;\n'
+# data = data + 'BEGIN \n'
+# data = data + "\t WRITELN('Hello, World!'); \n"
+# data = data + 'END.' 
+# lexer.input(data)
 
-while True:
-    tok = lexer.token()
-    if not tok:
-        break
-    print(tok)
-    print(' ')
+# while True:
+#     tok = lexer.token()
+#     if not tok:
+#         break
+#     print(tok)
+#     print(' ')
