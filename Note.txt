@@ -1,0 +1,1 @@
+Untuk referensi, liat aja yang basic.py, basicinterp.py, basiclex.py, basicparse.py dan namanya sesuai dengan code kita kek basic.py sama dengan pascal.py, basicinterp.py sama dengan pascalinterpreter.py, yang pascallex.py harusnya udah, tinggal yang lainnya ini, pascal.py gw dh nyalin dari basic.py, sekian
