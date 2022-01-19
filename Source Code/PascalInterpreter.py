@@ -26,19 +26,19 @@ class PascalInterpreter:
             'RND': lambda z: random.random()
         }
 
-    # Collect all data statements
-    def collect_data(self):
-        self.data = []
-        for lineno in self.stat:
-            if self.prog[lineno][0] == 'DATA':
-                self.data = self.data + self.prog[lineno][1]
-        self.dc = 0                  # Initialize the data counter
+    # # Collect all data statements
+    # def collect_data(self):
+    #     self.data = []
+    #     for lineno in self.stat:
+    #         if self.prog[lineno][0] == 'DATA':
+    #             self.data = self.data + self.prog[lineno][1]
+    #     self.dc = 0                  # Initialize the data counter
 
     # Check for end statements
     def check_end(self):
         has_end = 0
         for lineno in self.stat:
-            if self.prog[lineno][0] == 'END' and not has_end:
+            if self.prog[lineno][0] == 'END.' and not has_end:
                 has_end = lineno
         if not has_end:
             print("NO END INSTRUCTION")
@@ -49,150 +49,150 @@ class PascalInterpreter:
             self.error = 1
 
     # Check loops
-    def check_loops(self):
-        for pc in range(len(self.stat)):
-            lineno = self.stat[pc]
-            if self.prog[lineno][0] == 'FOR':
-                forinst = self.prog[lineno]
-                loopvar = forinst[1]
-                for i in range(pc + 1, len(self.stat)):
-                    if self.prog[self.stat[i]][0] == 'NEXT':
-                        nextvar = self.prog[self.stat[i]][1]
-                        if nextvar != loopvar:
-                            continue
-                        self.loopend[pc] = i
-                        break
-                else:
-                    print("FOR WITHOUT NEXT AT LINE %s" % self.stat[pc])
-                    self.error = 1
+    # def check_loops(self):
+    #     for pc in range(len(self.stat)):
+    #         lineno = self.stat[pc]
+    #         if self.prog[lineno][0] == 'FOR':
+    #             forinst = self.prog[lineno]
+    #             loopvar = forinst[1]
+    #             for i in range(pc + 1, len(self.stat)):
+    #                 if self.prog[self.stat[i]][0] == 'NEXT':
+    #                     nextvar = self.prog[self.stat[i]][1]
+    #                     if nextvar != loopvar:
+    #                         continue
+    #                     self.loopend[pc] = i
+    #                     break
+    #             else:
+    #                 print("FOR WITHOUT NEXT AT LINE %s" % self.stat[pc])
+    #                 self.error = 1
 
     # Evaluate an expression
-    def eval(self, expr):
-        etype = expr[0]
-        if etype == 'NUM':
-            return expr[1]
-        elif etype == 'GROUP':
-            return self.eval(expr[1])
-        elif etype == 'UNARY':
-            if expr[1] == '-':
-                return -self.eval(expr[2])
-        elif etype == 'BINOP':
-            if expr[1] == '+':
-                return self.eval(expr[2]) + self.eval(expr[3])
-            elif expr[1] == '-':
-                return self.eval(expr[2]) - self.eval(expr[3])
-            elif expr[1] == '*':
-                return self.eval(expr[2]) * self.eval(expr[3])
-            elif expr[1] == '/':
-                return float(self.eval(expr[2])) / self.eval(expr[3])
-            elif expr[1] == '^':
-                return abs(self.eval(expr[2]))**self.eval(expr[3])
-        elif etype == 'VAR':
-            var, dim1, dim2 = expr[1]
-            if not dim1 and not dim2:
-                if var in self.vars:
-                    return self.vars[var]
-                else:
-                    print("UNDEFINED VARIABLE %s AT LINE %s" %
-                          (var, self.stat[self.pc]))
-                    raise RuntimeError
-            # May be a list lookup or a function evaluation
-            if dim1 and not dim2:
-                if var in self.functions:
-                    # A function
-                    return self.functions[var](dim1)
-                else:
-                    # A list evaluation
-                    if var in self.lists:
-                        dim1val = self.eval(dim1)
-                        if dim1val < 1 or dim1val > len(self.lists[var]):
-                            print("LIST INDEX OUT OF BOUNDS AT LINE %s" %
-                                  self.stat[self.pc])
-                            raise RuntimeError
-                        return self.lists[var][dim1val - 1]
-            if dim1 and dim2:
-                if var in self.tables:
-                    dim1val = self.eval(dim1)
-                    dim2val = self.eval(dim2)
-                    if dim1val < 1 or dim1val > len(self.tables[var]) or dim2val < 1 or dim2val > len(self.tables[var][0]):
-                        print("TABLE INDEX OUT OUT BOUNDS AT LINE %s" %
-                              self.stat[self.pc])
-                        raise RuntimeError
-                    return self.tables[var][dim1val - 1][dim2val - 1]
-            print("UNDEFINED VARIABLE %s AT LINE %s" %
-                  (var, self.stat[self.pc]))
-            raise RuntimeError
+    # def eval(self, expr):
+    #     etype = expr[0]
+    #     if etype == 'NUM':
+    #         return expr[1]
+    #     elif etype == 'GROUP':
+    #         return self.eval(expr[1])
+    #     elif etype == 'UNARY':
+    #         if expr[1] == '-':
+    #             return -self.eval(expr[2])
+    #     elif etype == 'BINOP':
+    #         if expr[1] == '+':
+    #             return self.eval(expr[2]) + self.eval(expr[3])
+    #         elif expr[1] == '-':
+    #             return self.eval(expr[2]) - self.eval(expr[3])
+    #         elif expr[1] == '*':
+    #             return self.eval(expr[2]) * self.eval(expr[3])
+    #         elif expr[1] == '/':
+    #             return float(self.eval(expr[2])) / self.eval(expr[3])
+    #         elif expr[1] == '^':
+    #             return abs(self.eval(expr[2]))**self.eval(expr[3])
+    #     elif etype == 'VAR':
+    #         var, dim1, dim2 = expr[1]
+    #         if not dim1 and not dim2:
+    #             if var in self.vars:
+    #                 return self.vars[var]
+    #             else:
+    #                 print("UNDEFINED VARIABLE %s AT LINE %s" %
+    #                       (var, self.stat[self.pc]))
+    #                 raise RuntimeError
+    #         # May be a list lookup or a function evaluation
+    #         if dim1 and not dim2:
+    #             if var in self.functions:
+    #                 # A function
+    #                 return self.functions[var](dim1)
+    #             else:
+    #                 # A list evaluation
+    #                 if var in self.lists:
+    #                     dim1val = self.eval(dim1)
+    #                     if dim1val < 1 or dim1val > len(self.lists[var]):
+    #                         print("LIST INDEX OUT OF BOUNDS AT LINE %s" %
+    #                               self.stat[self.pc])
+    #                         raise RuntimeError
+    #                     return self.lists[var][dim1val - 1]
+    #         if dim1 and dim2:
+    #             if var in self.tables:
+    #                 dim1val = self.eval(dim1)
+    #                 dim2val = self.eval(dim2)
+    #                 if dim1val < 1 or dim1val > len(self.tables[var]) or dim2val < 1 or dim2val > len(self.tables[var][0]):
+    #                     print("TABLE INDEX OUT OUT BOUNDS AT LINE %s" %
+    #                           self.stat[self.pc])
+    #                     raise RuntimeError
+    #                 return self.tables[var][dim1val - 1][dim2val - 1]
+    #         print("UNDEFINED VARIABLE %s AT LINE %s" %
+    #               (var, self.stat[self.pc]))
+    #         raise RuntimeError
 
     # Evaluate a relational expression
-    def releval(self, expr):
-        etype = expr[1]
-        lhs = self.eval(expr[2])
-        rhs = self.eval(expr[3])
-        if etype == '<':
-            if lhs < rhs:
-                return 1
-            else:
-                return 0
+    # def releval(self, expr):
+    #     etype = expr[1]
+    #     lhs = self.eval(expr[2])
+    #     rhs = self.eval(expr[3])
+    #     if etype == '<':
+    #         if lhs < rhs:
+    #             return 1
+    #         else:
+    #             return 0
 
-        elif etype == '<=':
-            if lhs <= rhs:
-                return 1
-            else:
-                return 0
+    #     elif etype == '<=':
+    #         if lhs <= rhs:
+    #             return 1
+    #         else:
+    #             return 0
 
-        elif etype == '>':
-            if lhs > rhs:
-                return 1
-            else:
-                return 0
+    #     elif etype == '>':
+    #         if lhs > rhs:
+    #             return 1
+    #         else:
+    #             return 0
 
-        elif etype == '>=':
-            if lhs >= rhs:
-                return 1
-            else:
-                return 0
+    #     elif etype == '>=':
+    #         if lhs >= rhs:
+    #             return 1
+    #         else:
+    #             return 0
 
-        elif etype == '=':
-            if lhs == rhs:
-                return 1
-            else:
-                return 0
+    #     elif etype == '=':
+    #         if lhs == rhs:
+    #             return 1
+    #         else:
+    #             return 0
 
-        elif etype == '<>':
-            if lhs != rhs:
-                return 1
-            else:
-                return 0
+    #     elif etype == '<>':
+    #         if lhs != rhs:
+    #             return 1
+    #         else:
+    #             return 0
 
     # Assignment
-    def assign(self, target, value):
-        var, dim1, dim2 = target
-        if not dim1 and not dim2:
-            self.vars[var] = self.eval(value)
-        elif dim1 and not dim2:
-            # List assignment
-            dim1val = self.eval(dim1)
-            if not var in self.lists:
-                self.lists[var] = [0] * 10
+    # def assign(self, target, value):
+    #     var, dim1, dim2 = target
+    #     if not dim1 and not dim2:
+    #         self.vars[var] = self.eval(value)
+    #     elif dim1 and not dim2:
+    #         # List assignment
+    #         dim1val = self.eval(dim1)
+    #         if not var in self.lists:
+    #             self.lists[var] = [0] * 10
 
-            if dim1val > len(self.lists[var]):
-                print ("DIMENSION TOO LARGE AT LINE %s" % self.stat[self.pc])
-                raise RuntimeError
-            self.lists[var][dim1val - 1] = self.eval(value)
-        elif dim1 and dim2:
-            dim1val = self.eval(dim1)
-            dim2val = self.eval(dim2)
-            if not var in self.tables:
-                temp = [0] * 10
-                v = []
-                for i in range(10):
-                    v.append(temp[:])
-                self.tables[var] = v
-            # Variable already exists
-            if dim1val > len(self.tables[var]) or dim2val > len(self.tables[var][0]):
-                print("DIMENSION TOO LARGE AT LINE %s" % self.stat[self.pc])
-                raise RuntimeError
-            self.tables[var][dim1val - 1][dim2val - 1] = self.eval(value)
+    #         if dim1val > len(self.lists[var]):
+    #             print ("DIMENSION TOO LARGE AT LINE %s" % self.stat[self.pc])
+    #             raise RuntimeError
+    #         self.lists[var][dim1val - 1] = self.eval(value)
+    #     elif dim1 and dim2:
+    #         dim1val = self.eval(dim1)
+    #         dim2val = self.eval(dim2)
+    #         if not var in self.tables:
+    #             temp = [0] * 10
+    #             v = []
+    #             for i in range(10):
+    #                 v.append(temp[:])
+    #             self.tables[var] = v
+    #         # Variable already exists
+    #         if dim1val > len(self.tables[var]) or dim2val > len(self.tables[var][0]):
+    #             print("DIMENSION TOO LARGE AT LINE %s" % self.stat[self.pc])
+    #             raise RuntimeError
+    #         self.tables[var][dim1val - 1][dim2val - 1] = self.eval(value)
 
     # Change the current line number
     def goto(self, linenum):
@@ -232,17 +232,37 @@ class PascalInterpreter:
             op = instr[0]
 
             # END and STOP statements
-            if op == 'END' or op == 'STOP':
+            if op == 'END.' or op == 'STOP':
                 break           # We're done
 
-            # GOTO statement
-            elif op == 'GOTO':
-                newline = instr[1]
-                self.goto(newline)
-                continue
+            # # GOTO statement
+            # elif op == 'GOTO':
+            #     newline = instr[1]
+            #     self.goto(newline)
+            #     continue
 
             # PRINT statement
-            elif op == 'PRINT':
+            elif op == 'WRITE':
+                plist = instr[1]
+                out = ""
+                for label, val in plist:
+                    if out:
+                        out += ' ' * (15 - (len(out) % 15))
+                    out += label
+                    if val:
+                        if label:
+                            out += " "
+                        eval = self.eval(val)
+                        out += str(eval)
+                sys.stdout.write(out)
+                end = instr[2]
+                # if not (end == ',' or end == ';'):
+                #     sys.stdout.write("\n")
+                if end == ',':
+                    sys.stdout.write(" " * (15 - (len(out) % 15)))
+                if end == ';':
+                    sys.stdout.write(" " * (3 - (len(out) % 3)))
+            elif op == 'WRITELN':
                 plist = instr[1]
                 out = ""
                 for label, val in plist:
@@ -263,11 +283,11 @@ class PascalInterpreter:
                 if end == ';':
                     sys.stdout.write(" " * (3 - (len(out) % 3)))
 
-            # LET statement
-            elif op == 'LET':
-                target = instr[1]
-                value = instr[2]
-                self.assign(target, value)
+            # # LET statement
+            # elif op == 'LET':
+            #     target = instr[1]
+            #     value = instr[2]
+            #     self.assign(target, value)
 
             # READ statement
             elif op == 'READ':
