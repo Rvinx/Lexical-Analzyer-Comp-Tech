@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'BEGIN COLON COMMA DATA DIVIDE DOT END EQUALS FLOAT ID INTEGER LPAREN MINUS NEWLINE PLUS POWER PROGRAM RPAREN SEMI STRING TIMES VAR WRITE WRITELNprogram : program statement\n               | statementprogram : errorstatement : INTEGER command NEWLINEstatement : INTEGER error NEWLINEstatement : NEWLINEstatement : INTEGER NEWLINEcommand : DATA numlistcommand : DATA errorcommand : WRITELN LPAREN wlist RPAREN endingcommand : WRITELN errorcommand : WRITELN LPAREN RPAREN endingcommand : WRITE LPAREN wlist RPAREN endingcommand : WRITE errorcommand : WRITE LPAREN RPAREN endingcommand : PROGRAM variable endingcommand : VAR varlist COLON variable endingcommand : VAR errorcommand : variable COLON variable endingcommand : variable errorcommand : variable COLON EQUALS expr SEMIvarlist : varlist COMMA variable\n               | variableexpr : INTEGER\n            | FLOATexpr : variableexpr : expr PLUS expr\n            | expr MINUS expr\n            | expr TIMES expr\n            | expr DIVIDE expr\n            | expr POWER exprvariable : IDcommand : END DOTcommand : BEGINending : SEMIwlist   : wlist COMMA witem\n               | witemwitem : STRINGwitem : exprnumlist : numlist COMMA number\n               | numbernumber  : INTEGER\n               | FLOAT'
+_lr_signature = 'leftPLUSMINUSleftTIMESDIVIDEleftPOWERBEGIN COLON COMMA DATA DIVIDE DOT ELSE END EQUALS FLOAT GE GT ID IF INTEGER LE LPAREN LT MINUS NE NEWLINE PLUS POWER PROGRAM RPAREN SEMI STRING THEN TIMES VAR WRITE WRITELNprogram : program statement\n               | statementprogram : errorstatement : INTEGER command NEWLINEstatement : INTEGER error NEWLINEstatement : NEWLINEstatement : INTEGER NEWLINEcommand : DATA numlistcommand : DATA errorcommand : WRITELN LPAREN wlist RPAREN endingcommand : WRITELN errorcommand : WRITELN LPAREN RPAREN endingcommand : WRITE LPAREN wlist RPAREN endingcommand : WRITE errorcommand : WRITE LPAREN RPAREN endingcommand : PROGRAM variable endingcommand : VAR varlist COLON variable endingcommand : VAR errorcommand : variable COLON variable endingcommand : variable errorcommand : variable COLON EQUALS expr SEMIvarlist : varlist COMMA variable\n               | variableexpr : INTEGER\n            | FLOATexpr : variableexpr : expr PLUS expr\n            | expr MINUS expr\n            | expr TIMES expr\n            | expr DIVIDE expr\n            | expr POWER exprvariable : IDcommand : END DOTcommand : BEGINending : SEMIcommand : IF LPAREN relexpr RPAREN THEN INTEGER INTEGERcommand : IF LPAREN error RPAREN THEN INTEGER INTEGERcommand : IF LPAREN relexpr RPAREN THEN errorcommand : ELSE INTEGERcommand : END endingcommand : END INTEGERrelexpr : expr LT expr\n               | expr LE expr\n               | expr GT expr\n               | expr GE expr\n               | expr EQUALS expr\n               | expr NE exprwlist   : wlist COMMA witem\n               | witemwitem : STRINGwitem : exprnumlist : numlist COMMA number\n               | numbernumber  : INTEGER\n               | FLOAT'
     
-_lr_action_items = {'error':([0,4,10,11,12,14,15,18,],[3,9,22,27,29,32,35,-32,]),'INTEGER':([0,1,2,3,5,6,8,10,19,20,26,28,37,51,56,58,59,60,61,62,],[4,4,-2,-3,-6,-1,-7,24,-4,-5,43,43,24,43,43,43,43,43,43,43,]),'NEWLINE':([0,1,2,3,4,5,6,7,8,9,17,19,20,21,22,23,24,25,27,29,32,35,36,48,49,54,57,64,65,69,76,77,78,],[5,5,-2,-3,8,-6,-1,19,-7,20,-34,-4,-5,-8,-9,-41,-42,-43,-11,-14,-20,-18,-33,-16,-35,-40,-12,-15,-19,-10,-13,-21,-17,]),'$end':([1,2,3,5,6,8,19,20,],[0,-2,-3,-6,-1,-7,-4,-5,]),'DATA':([4,],[10,]),'WRITELN':([4,],[11,]),'WRITE':([4,],[12,]),'PROGRAM':([4,],[13,]),'VAR':([4,],[15,]),'END':([4,],[16,]),'BEGIN':([4,],[17,]),'ID':([4,13,15,26,28,31,51,52,53,56,58,59,60,61,62,],[18,18,18,18,18,18,18,18,18,18,18,18,18,18,18,]),'FLOAT':([10,26,28,37,51,56,58,59,60,61,62,],[25,44,44,25,44,44,44,44,44,44,44,]),'LPAREN':([11,12,],[26,28,]),'COLON':([14,18,33,34,68,],[31,-32,52,-23,-22,]),'DOT':([16,],[36,]),'SEMI':([18,30,39,43,44,45,47,50,55,63,66,67,71,72,73,74,75,],[-32,49,49,-24,-25,-26,49,49,49,49,77,49,-27,-28,-29,-30,-31,]),'COMMA':([18,21,23,24,25,33,34,38,40,41,42,43,44,45,46,54,68,70,71,72,73,74,75,],[-32,37,-41,-42,-43,53,-23,56,-37,-38,-39,-24,-25,-26,56,-40,-22,-36,-27,-28,-29,-30,-31,]),'PLUS':([18,42,43,44,45,66,71,72,73,74,75,],[-32,58,-24,-25,-26,58,58,58,58,58,58,]),'MINUS':([18,42,43,44,45,66,71,72,73,74,75,],[-32,59,-24,-25,-26,59,59,59,59,59,59,]),'TIMES':([18,42,43,44,45,66,71,72,73,74,75,],[-32,60,-24,-25,-26,60,60,60,60,60,60,]),'DIVIDE':([18,42,43,44,45,66,71,72,73,74,75,],[-32,61,-24,-25,-26,61,61,61,61,61,61,]),'POWER':([18,42,43,44,45,66,71,72,73,74,75,],[-32,62,-24,-25,-26,62,62,62,62,62,62,]),'RPAREN':([18,26,28,38,40,41,42,43,44,45,46,70,71,72,73,74,75,],[-32,39,47,55,-37,-38,-39,-24,-25,-26,63,-36,-27,-28,-29,-30,-31,]),'STRING':([26,28,56,],[41,41,41,]),'EQUALS':([31,],[51,]),}
+_lr_action_items = {'error':([0,4,10,11,12,14,15,20,42,96,],[3,9,24,29,31,34,37,-32,61,105,]),'INTEGER':([0,1,2,3,5,6,8,10,16,19,21,22,28,30,42,44,57,65,67,68,69,70,71,80,81,82,83,84,85,96,97,104,106,],[4,4,-2,-3,-6,-1,-7,26,40,43,-4,-5,50,50,50,26,50,50,50,50,50,50,50,50,50,50,50,50,50,104,106,107,108,]),'NEWLINE':([0,1,2,3,4,5,6,7,8,9,17,21,22,23,24,25,26,27,29,31,34,37,38,39,40,41,43,55,63,66,73,74,86,93,94,95,105,107,108,],[5,5,-2,-3,8,-6,-1,21,-7,22,-34,-4,-5,-8,-9,-53,-54,-55,-11,-14,-20,-18,-33,-40,-41,-35,-39,-16,-52,-12,-15,-19,-10,-13,-21,-17,-38,-36,-37,]),'$end':([1,2,3,5,6,8,21,22,],[0,-2,-3,-6,-1,-7,-4,-5,]),'DATA':([4,],[10,]),'WRITELN':([4,],[11,]),'WRITE':([4,],[12,]),'PROGRAM':([4,],[13,]),'VAR':([4,],[15,]),'END':([4,],[16,]),'BEGIN':([4,],[17,]),'IF':([4,],[18,]),'ELSE':([4,],[19,]),'ID':([4,13,15,28,30,33,42,57,58,59,65,67,68,69,70,71,80,81,82,83,84,85,],[20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,]),'FLOAT':([10,28,30,42,44,57,65,67,68,69,70,71,80,81,82,83,84,85,],[27,51,51,51,27,51,51,51,51,51,51,51,51,51,51,51,51,51,]),'LPAREN':([11,12,18,],[28,30,42,]),'COLON':([14,20,35,36,77,],[33,-32,58,-23,-22,]),'DOT':([16,],[38,]),'SEMI':([16,20,32,46,50,51,52,54,56,64,72,75,76,88,89,90,91,92,],[41,-32,41,41,-24,-25,-26,41,41,41,41,94,41,-27,-28,-29,-30,-31,]),'COMMA':([20,23,25,26,27,35,36,45,47,48,49,50,51,52,53,63,77,87,88,89,90,91,92,],[-32,44,-53,-54,-55,59,-23,65,-49,-50,-51,-24,-25,-26,65,-52,-22,-48,-27,-28,-29,-30,-31,]),'PLUS':([20,49,50,51,52,62,75,88,89,90,91,92,98,99,100,101,102,103,],[-32,67,-24,-25,-26,67,67,-27,-28,-29,-30,-31,67,67,67,67,67,67,]),'MINUS':([20,49,50,51,52,62,75,88,89,90,91,92,98,99,100,101,102,103,],[-32,68,-24,-25,-26,68,68,-27,-28,-29,-30,-31,68,68,68,68,68,68,]),'TIMES':([20,49,50,51,52,62,75,88,89,90,91,92,98,99,100,101,102,103,],[-32,69,-24,-25,-26,69,69,69,69,-29,-30,-31,69,69,69,69,69,69,]),'DIVIDE':([20,49,50,51,52,62,75,88,89,90,91,92,98,99,100,101,102,103,],[-32,70,-24,-25,-26,70,70,70,70,-29,-30,-31,70,70,70,70,70,70,]),'POWER':([20,49,50,51,52,62,75,88,89,90,91,92,98,99,100,101,102,103,],[-32,71,-24,-25,-26,71,71,71,71,71,71,-31,71,71,71,71,71,71,]),'RPAREN':([20,28,30,45,47,48,49,50,51,52,53,60,61,87,88,89,90,91,92,98,99,100,101,102,103,],[-32,46,54,64,-49,-50,-51,-24,-25,-26,72,78,79,-48,-27,-28,-29,-30,-31,-42,-43,-44,-45,-46,-47,]),'LT':([20,50,51,52,62,88,89,90,91,92,],[-32,-24,-25,-26,80,-27,-28,-29,-30,-31,]),'LE':([20,50,51,52,62,88,89,90,91,92,],[-32,-24,-25,-26,81,-27,-28,-29,-30,-31,]),'GT':([20,50,51,52,62,88,89,90,91,92,],[-32,-24,-25,-26,82,-27,-28,-29,-30,-31,]),'GE':([20,50,51,52,62,88,89,90,91,92,],[-32,-24,-25,-26,83,-27,-28,-29,-30,-31,]),'EQUALS':([20,33,50,51,52,62,88,89,90,91,92,],[-32,57,-24,-25,-26,84,-27,-28,-29,-30,-31,]),'NE':([20,50,51,52,62,88,89,90,91,92,],[-32,-24,-25,-26,85,-27,-28,-29,-30,-31,]),'STRING':([28,30,65,],[48,48,48,]),'THEN':([78,79,],[96,97,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'statement':([0,1,],[2,6,]),'command':([4,],[7,]),'variable':([4,13,15,26,28,31,51,52,53,56,58,59,60,61,62,],[14,30,34,45,45,50,45,67,68,45,45,45,45,45,45,]),'numlist':([10,],[21,]),'number':([10,37,],[23,54,]),'varlist':([15,],[33,]),'wlist':([26,28,],[38,46,]),'witem':([26,28,56,],[40,40,70,]),'expr':([26,28,51,56,58,59,60,61,62,],[42,42,66,42,71,72,73,74,75,]),'ending':([30,39,47,50,55,63,67,],[48,57,64,65,69,76,78,]),}
+_lr_goto_items = {'program':([0,],[1,]),'statement':([0,1,],[2,6,]),'command':([4,],[7,]),'variable':([4,13,15,28,30,33,42,57,58,59,65,67,68,69,70,71,80,81,82,83,84,85,],[14,32,36,52,52,56,52,52,76,77,52,52,52,52,52,52,52,52,52,52,52,52,]),'numlist':([10,],[23,]),'number':([10,44,],[25,63,]),'varlist':([15,],[35,]),'ending':([16,32,46,54,56,64,72,76,],[39,55,66,73,74,86,93,95,]),'wlist':([28,30,],[45,53,]),'witem':([28,30,65,],[47,47,87,]),'expr':([28,30,42,57,65,67,68,69,70,71,80,81,82,83,84,85,],[49,49,62,75,49,88,89,90,91,92,98,99,100,101,102,103,]),'relexpr':([42,],[60,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -33,41 +33,53 @@ _lr_productions = [
   ('statement -> INTEGER command NEWLINE','statement',3,'p_statement','PascalParse.py',40),
   ('statement -> INTEGER error NEWLINE','statement',3,'p_statement_bad','PascalParse.py',55),
   ('statement -> NEWLINE','statement',1,'p_statement_newline','PascalParse.py',62),
-  ('statement -> INTEGER NEWLINE','statement',2,'p_statement_blank','PascalParse.py',73),
-  ('command -> DATA numlist','command',2,'p_command_data','PascalParse.py',77),
-  ('command -> DATA error','command',2,'p_command_data_bad','PascalParse.py',82),
-  ('command -> WRITELN LPAREN wlist RPAREN ending','command',5,'p_command_writeln','PascalParse.py',88),
-  ('command -> WRITELN error','command',2,'p_command_writeln_bad','PascalParse.py',93),
-  ('command -> WRITELN LPAREN RPAREN ending','command',4,'p_command_writeln_empty','PascalParse.py',97),
-  ('command -> WRITE LPAREN wlist RPAREN ending','command',5,'p_command_write','PascalParse.py',102),
-  ('command -> WRITE error','command',2,'p_command_write_bad','PascalParse.py',107),
-  ('command -> WRITE LPAREN RPAREN ending','command',4,'p_command_write_empty','PascalParse.py',111),
-  ('command -> PROGRAM variable ending','command',3,'p_command_program','PascalParse.py',119),
-  ('command -> VAR varlist COLON variable ending','command',5,'p_command_var','PascalParse.py',128),
-  ('command -> VAR error','command',2,'p_command_var_error','PascalParse.py',133),
-  ('command -> variable COLON variable ending','command',4,'p_command_declare','PascalParse.py',138),
-  ('command -> variable error','command',2,'p_command_declare_error','PascalParse.py',143),
-  ('command -> variable COLON EQUALS expr SEMI','command',5,'p_command_assign','PascalParse.py',148),
-  ('varlist -> varlist COMMA variable','varlist',3,'p_command_varlist','PascalParse.py',153),
-  ('varlist -> variable','varlist',1,'p_command_varlist','PascalParse.py',154),
-  ('expr -> INTEGER','expr',1,'p_command_value','PascalParse.py',162),
-  ('expr -> FLOAT','expr',1,'p_command_value','PascalParse.py',163),
-  ('expr -> variable','expr',1,'p_command_variable','PascalParse.py',167),
-  ('expr -> expr PLUS expr','expr',3,'p_expr_binary','PascalParse.py',171),
-  ('expr -> expr MINUS expr','expr',3,'p_expr_binary','PascalParse.py',172),
-  ('expr -> expr TIMES expr','expr',3,'p_expr_binary','PascalParse.py',173),
-  ('expr -> expr DIVIDE expr','expr',3,'p_expr_binary','PascalParse.py',174),
-  ('expr -> expr POWER expr','expr',3,'p_expr_binary','PascalParse.py',175),
-  ('variable -> ID','variable',1,'p_variable','PascalParse.py',181),
-  ('command -> END DOT','command',2,'p_command_end','PascalParse.py',185),
-  ('command -> BEGIN','command',1,'p_command_begin','PascalParse.py',190),
-  ('ending -> SEMI','ending',1,'p_ending','PascalParse.py',196),
-  ('wlist -> wlist COMMA witem','wlist',3,'p_wlist','PascalParse.py',203),
-  ('wlist -> witem','wlist',1,'p_wlist','PascalParse.py',204),
-  ('witem -> STRING','witem',1,'p_item_string','PascalParse.py',215),
-  ('witem -> expr','witem',1,'p_item_expr','PascalParse.py',221),
-  ('numlist -> numlist COMMA number','numlist',3,'p_numlist','PascalParse.py',230),
-  ('numlist -> number','numlist',1,'p_numlist','PascalParse.py',231),
-  ('number -> INTEGER','number',1,'p_number','PascalParse.py',243),
-  ('number -> FLOAT','number',1,'p_number','PascalParse.py',244),
+  ('statement -> INTEGER NEWLINE','statement',2,'p_statement_blank','PascalParse.py',67),
+  ('command -> DATA numlist','command',2,'p_command_data','PascalParse.py',71),
+  ('command -> DATA error','command',2,'p_command_data_bad','PascalParse.py',76),
+  ('command -> WRITELN LPAREN wlist RPAREN ending','command',5,'p_command_writeln','PascalParse.py',82),
+  ('command -> WRITELN error','command',2,'p_command_writeln_bad','PascalParse.py',87),
+  ('command -> WRITELN LPAREN RPAREN ending','command',4,'p_command_writeln_empty','PascalParse.py',91),
+  ('command -> WRITE LPAREN wlist RPAREN ending','command',5,'p_command_write','PascalParse.py',96),
+  ('command -> WRITE error','command',2,'p_command_write_bad','PascalParse.py',101),
+  ('command -> WRITE LPAREN RPAREN ending','command',4,'p_command_write_empty','PascalParse.py',105),
+  ('command -> PROGRAM variable ending','command',3,'p_command_program','PascalParse.py',113),
+  ('command -> VAR varlist COLON variable ending','command',5,'p_command_var','PascalParse.py',122),
+  ('command -> VAR error','command',2,'p_command_var_error','PascalParse.py',127),
+  ('command -> variable COLON variable ending','command',4,'p_command_declare','PascalParse.py',132),
+  ('command -> variable error','command',2,'p_command_declare_error','PascalParse.py',137),
+  ('command -> variable COLON EQUALS expr SEMI','command',5,'p_command_assign','PascalParse.py',142),
+  ('varlist -> varlist COMMA variable','varlist',3,'p_command_varlist','PascalParse.py',147),
+  ('varlist -> variable','varlist',1,'p_command_varlist','PascalParse.py',148),
+  ('expr -> INTEGER','expr',1,'p_command_value','PascalParse.py',156),
+  ('expr -> FLOAT','expr',1,'p_command_value','PascalParse.py',157),
+  ('expr -> variable','expr',1,'p_command_variable','PascalParse.py',161),
+  ('expr -> expr PLUS expr','expr',3,'p_expr_binary','PascalParse.py',165),
+  ('expr -> expr MINUS expr','expr',3,'p_expr_binary','PascalParse.py',166),
+  ('expr -> expr TIMES expr','expr',3,'p_expr_binary','PascalParse.py',167),
+  ('expr -> expr DIVIDE expr','expr',3,'p_expr_binary','PascalParse.py',168),
+  ('expr -> expr POWER expr','expr',3,'p_expr_binary','PascalParse.py',169),
+  ('variable -> ID','variable',1,'p_variable','PascalParse.py',177),
+  ('command -> END DOT','command',2,'p_command_end','PascalParse.py',181),
+  ('command -> BEGIN','command',1,'p_command_begin','PascalParse.py',186),
+  ('ending -> SEMI','ending',1,'p_ending','PascalParse.py',192),
+  ('command -> IF LPAREN relexpr RPAREN THEN INTEGER INTEGER','command',7,'p_command_if','PascalParse.py',200),
+  ('command -> IF LPAREN error RPAREN THEN INTEGER INTEGER','command',7,'p_command_if_bad','PascalParse.py',205),
+  ('command -> IF LPAREN relexpr RPAREN THEN error','command',6,'p_command_if_bad2','PascalParse.py',209),
+  ('command -> ELSE INTEGER','command',2,'p_command_else','PascalParse.py',213),
+  ('command -> END ending','command',2,'p_command_endelseif','PascalParse.py',218),
+  ('command -> END INTEGER','command',2,'p_command_endif','PascalParse.py',222),
+  ('relexpr -> expr LT expr','relexpr',3,'p_relexpr','PascalParse.py',226),
+  ('relexpr -> expr LE expr','relexpr',3,'p_relexpr','PascalParse.py',227),
+  ('relexpr -> expr GT expr','relexpr',3,'p_relexpr','PascalParse.py',228),
+  ('relexpr -> expr GE expr','relexpr',3,'p_relexpr','PascalParse.py',229),
+  ('relexpr -> expr EQUALS expr','relexpr',3,'p_relexpr','PascalParse.py',230),
+  ('relexpr -> expr NE expr','relexpr',3,'p_relexpr','PascalParse.py',231),
+  ('wlist -> wlist COMMA witem','wlist',3,'p_wlist','PascalParse.py',236),
+  ('wlist -> witem','wlist',1,'p_wlist','PascalParse.py',237),
+  ('witem -> STRING','witem',1,'p_item_string','PascalParse.py',248),
+  ('witem -> expr','witem',1,'p_item_expr','PascalParse.py',254),
+  ('numlist -> numlist COMMA number','numlist',3,'p_numlist','PascalParse.py',263),
+  ('numlist -> number','numlist',1,'p_numlist','PascalParse.py',264),
+  ('number -> INTEGER','number',1,'p_number','PascalParse.py',276),
+  ('number -> FLOAT','number',1,'p_number','PascalParse.py',277),
 ]

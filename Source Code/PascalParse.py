@@ -3,12 +3,12 @@ import PascalLex
 
 tokens = PascalLex.tokens
 
-# precedence = (
-#     ('left', 'PLUS', 'MINUS'),
-#     ('left', 'TIMES', 'DIVIDE'),
-#     ('left', 'POWER'),
-#     # ('right', 'UMINUS')
-# )
+precedence = (
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'TIMES', 'DIVIDE'),
+    ('left', 'POWER'),
+    # ('right', 'UMINUS')
+)
 
 # PASCAL dictionary
 
@@ -62,12 +62,6 @@ def p_statement_newline(p):
     '''statement : NEWLINE'''
     p[0] = None
 
-# nanti ke line 93
-# def p_command_var(p):
-#     '''command : VAR variable COLON'''
-
-# DATA statement
-
 # Blank line number
 def p_statement_blank(p):
     '''statement : INTEGER NEWLINE'''
@@ -114,7 +108,7 @@ def p_command_write_empty(p):
 
 
 # ======================================================
-# SOME STATEMENT
+# PROGRAM STATEMENT
 def p_command_program(p):
     '''command : PROGRAM variable ending'''
     p[0] = ('PROGRAM', p[2], p[3])
@@ -177,13 +171,15 @@ def p_expr_binary(p):
     p[0] = ('BINOP', p[2], p[1], p[3])
 # ======================================================
 
+# ======================================================
+# Common Statement
 def p_variable(p):
     '''variable : ID'''
     p[0] = p[1]
 
 def p_command_end(p):
     '''command : END DOT'''
-    p[0] = ('END',)
+    p[0] = ('END', p[2])
     # print(p[0])
 
 def p_command_begin(p):
@@ -197,7 +193,44 @@ def p_ending(p):
     # print('asdfasd')
     p[0] = p[1]
 
-# lanjut di line 172
+# ======================================================
+# IF Statement
+
+def p_command_if(p):
+    '''command : IF LPAREN relexpr RPAREN THEN INTEGER INTEGER'''
+    p[0] = ('IF', p[3], p[6], p[7])
+    # print(p[0])
+
+def p_command_if_bad(p):
+    '''command : IF LPAREN error RPAREN THEN INTEGER INTEGER'''
+    p[0] = "BAD RELATIONAL EXPRESSION"
+
+def p_command_if_bad2(p):
+    '''command : IF LPAREN relexpr RPAREN THEN error'''
+    p[0] = "INVALID IF Statement"
+
+def p_command_else(p):
+    '''command : ELSE INTEGER'''
+    p[0] = ('ELSE', p[2])
+    # print(p[0])
+
+def p_command_endelseif(p):
+    '''command : END ending'''
+    p[0] = ('END', p[2])
+
+def p_command_endif(p):
+    '''command : END INTEGER'''
+    p[0] = ('END', p[2])
+
+def p_relexpr(p):
+    '''relexpr : expr LT expr
+               | expr LE expr
+               | expr GT expr
+               | expr GE expr
+               | expr EQUALS expr
+               | expr NE expr'''
+    p[0] = ('RELOP', p[2], p[1], p[3])
+# ======================================================
 
 def p_wlist(p):
     '''wlist   : wlist COMMA witem

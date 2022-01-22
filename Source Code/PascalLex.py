@@ -1,10 +1,11 @@
 # Group 4
+# 2301879671 - Aurelius Elvin#
 # 2301856932 - Nicholas Enrico
 # 2301871385 - Merlyn Febriany
 # 2301867633 - I Made Yoga Mahendra
 # 2301892704 - Jason
-# 2301879671 - Aurelius Elvin
 # 2301868812 - Jenifer Valen Lesmana
+# 
 
 from ply import *
 
@@ -14,7 +15,8 @@ keywords =('BEGIN',
     # 'End' ,
      'END', 'PROGRAM', 'WRITELN', 
      'VAR', 
-    # 'IF','ELSE' ,'THEN', 'FOR','DO', 
+    'IF','ELSE' ,'THEN', 
+    # 'FOR','DO', 
     'WRITE', 
     'DATA',
     # 'BLANK'
@@ -30,8 +32,8 @@ tokens =keywords +(
     'INTEGER', 'FLOAT',
     'EQUALS',
     'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'POWER', 
-    # 'LT',
-    # 'LE', 'GT', 'GE', 'NE', 
+    'LT',
+    'LE', 'GT', 'GE', 'NE', 
     'COLON'
     )
 
@@ -59,11 +61,11 @@ t_POWER =r'\^'
 t_DIVIDE = r'/'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
-# t_LT = r'<'
-# t_LE = r'<='
-# t_GT = r'>'
-# t_GE = r'>='
-# t_NE = r'<>'
+t_LT = r'<'
+t_LE = r'<='
+t_GT = r'>'
+t_GE = r'>='
+t_NE = r'<>'
 t_COMMA = r'\,'
 t_SEMI = r';'
 t_INTEGER = r'\d+'

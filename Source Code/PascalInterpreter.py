@@ -13,14 +13,14 @@ class PascalInterpreter:
         for lineno in self.stat:
             if self.prog[lineno][0] == 'DATA':
                 self.data = self.data + self.prog[lineno][1]
-                # print('asdf')
+                print('asdf')
         self.dc = 0
 
     # check for end statements
     def check_end(self):
         has_end = 0
         for lineno in self.stat:
-            if self.prog[lineno][0] == 'END' and not has_end:
+            if self.prog[lineno][0] == 'END' and self.prog[lineno][1] == '.' and not has_end:
                 has_end = lineno
                 # print('END INSTRUCTION')
         if not has_end:
@@ -59,6 +59,46 @@ class PascalInterpreter:
                 raise RuntimeError
 
     # Evaluate a relational expression line 126
+    def releval(self, expr):
+        etype = expr[1]
+        lhs = self.eval(expr[2])
+        rhs = self.eval(expr[3])
+        # print(lhs, etype, rhs)
+        if etype == '<':
+            if lhs < rhs:
+                return 1
+            else:
+                return 0
+        elif etype == '<=':
+            if lhs <= rhs:
+                return 1
+            else:
+                return 0
+
+        elif etype == '>':
+            # print(lhs)
+            if lhs > rhs:
+                return 1
+            else:
+                return 0
+
+        elif etype == '>=':
+            if lhs >= rhs:
+                return 1
+            else:
+                return 0
+
+        elif etype == '=':
+            if lhs == rhs:
+                return 1
+            else:
+                return 0
+
+        elif etype == '<>':
+            if lhs != rhs:
+                return 1
+            else:
+                return 0
 
     # Assignment line 167
     def assign(self, target, value):
@@ -70,12 +110,12 @@ class PascalInterpreter:
 
 
     # Change the current line number
-    # def goto(self, linenum):
-    #     if not linenum in self.prog:
-    #         print("UNDEFINED LINE NUMBER %d AT LINE %d" %
-    #         (linenum, self.stat[self.pc]))
-    #         raise RuntimeError
-    #     self.pc = self.stat.index(linenum)
+    def goto(self, linenum):
+        if not linenum in self.prog:
+            print("UNDEFINED LINE NUMBER %d AT LINE %d" %
+            (linenum, self.stat[self.pc]))
+            raise RuntimeError
+        self.pc = self.stat.index(linenum)
 
     # Run
     def run(self):
@@ -137,7 +177,7 @@ class PascalInterpreter:
                 if not (end == ';'):
                     sys.stdout.write('\n')
                 if end == ';':
-                    # print('asdddddddddddd')
+                    # print('testing')
                     sys.stdout.write(" " * (3 - (len(out) % 3)))
                     if(op == 'WRITELN'):
                         sys.stdout.write('\n')                        
@@ -167,9 +207,25 @@ class PascalInterpreter:
                         break
                         # return
 
-            # elif op == 'DECLARE':
-            #     print('')
-                
+            # IF STATEMENT
+            elif op == 'IF':
+                relop = instr[1]
+                # print(relop)
+                newline = instr[2]
+                toelse = instr[3]
+                # print(relop)
+                # print(newline)
+                # print(toelse)
+                if(self.releval(relop)):
+                    self.goto(int(newline))
+                    continue
+                elif not(self.releval(relop)):
+                    self.goto(int(toelse))
+
+            elif op == 'ELSE':
+                # relop = instr[1]
+                newline = instr[1]
+                self.goto(int(newline))
             self.pc += 1
             
             
@@ -223,9 +279,9 @@ class PascalInterpreter:
             #         _out += self.var_str(r)
             #         first = 0
             #     print(_out)
-            # elif op == 'IF':
-            #     print("%s IF %s THEN %d" %
-            #           (line, self.relexpr_str(instr[1]), instr[2]))
+            elif op == 'IF':
+                print("%s IF %s THEN %d" %
+                      (line, self.relexpr_str(instr[1]), instr[2]))
             # elif op == 'GOTO' or op == 'GOSUB':
             #     print("%s %s %s" % (line, op, instr[1]))
             # elif op == 'FOR':
