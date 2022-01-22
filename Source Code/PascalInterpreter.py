@@ -34,13 +34,40 @@ class PascalInterpreter:
     # check loops line 51
 
     # Evaluate an expression line 69
-    # def eval(self, expr):
-    #     etype = expr[0]
-    #     if
+    def eval(self, expr):
+        etype = expr[0]
+        if etype == 'NUM':
+            return expr[1]
+        elif etype == 'BINOP':
+            if expr[1] == '+':
+                return self.eval(expr[2]) + self.eval(expr[3])
+            elif expr[1] == '-':
+                return self.eval(expr[2]) - self.eval(expr[3])
+            elif expr[1] == '*':
+                return self.eval(expr[2]) * self.eval(expr[3])
+            elif expr[1] == '/':
+                return float(self.eval(expr[2])) / self.eval(expr[3])
+            elif expr[1] == '^':
+                return abs(self.eval(expr[2]))**self.eval(expr[3])
+        elif etype == 'VARIABLE':
+            var = expr[1]
+            if var in self.vars:
+                    return self.vars[var]
+            else:
+                print("UNDEFINED VARIABLE %s AT LINE %s" %
+                        (var, self.stat[self.pc]))
+                raise RuntimeError
 
     # Evaluate a relational expression line 126
 
     # Assignment line 167
+    def assign(self, target, value):
+        # print(target, value)
+        var = target
+        # print(var)
+        self.vars[var] = self.eval(value)
+        print(self.vars[var])
+
 
     # Change the current line number
     # def goto(self, linenum):
@@ -78,7 +105,7 @@ class PascalInterpreter:
             instr = self.prog[line]
             
             op = instr[0]
-            # print(instr)
+            # print(op)
             # END statements
             if op == 'END':
                 # print('asdf')
@@ -87,7 +114,7 @@ class PascalInterpreter:
             # goto ga perlu
 
             # WRITELN statement
-            elif op == 'WRITELN':
+            elif op == 'WRITELN' or op == 'WRITE':
                 # print('asdf')
                 plist = instr[1]
                 # print(plist[0])
@@ -112,9 +139,37 @@ class PascalInterpreter:
                 if end == ';':
                     # print('asdddddddddddd')
                     sys.stdout.write(" " * (3 - (len(out) % 3)))
-                    sys.stdout.write('\n')
+                    if(op == 'WRITELN'):
+                        sys.stdout.write('\n')                        
                     # self.pc+= 1
                     # return 
+            
+            # ASSIGN STATEMENT
+            elif op == 'ASSIGN':
+                # print(op)
+                target = instr[1]
+                value = instr[2]
+                self.assign(target, value)
+                # print(target)
+            
+            # VAR STATEMENT
+            elif op == 'VAR':
+                # print('testing var')
+                # print(instr)
+                for target in instr[1]:
+                    if self.dc < len(self.data):
+                        value = ('NUM', self.data[self.dc])
+                        self.assign(target, value)
+                        self.dc += 1
+                    else:
+                        # No more data.  Program ends
+                        # print('add')
+                        break
+                        # return
+
+            elif op == 'DECLARE':
+                print('')
+                
             self.pc += 1
             
             

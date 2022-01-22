@@ -1,9 +1,5 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    VAR
-
 Grammar
 
 Rule 0     S' -> program
@@ -19,50 +15,78 @@ Rule 9     command -> DATA error
 Rule 10    command -> WRITELN LPAREN wlist RPAREN ending
 Rule 11    command -> WRITELN error
 Rule 12    command -> WRITELN LPAREN RPAREN ending
-Rule 13    command -> PROGRAM variable ending
-Rule 14    variable -> ID
-Rule 15    command -> END DOT
-Rule 16    command -> BEGIN
-Rule 17    ending -> SEMI
-Rule 18    wlist -> wlist COMMA ID
-Rule 19    wlist -> witem
-Rule 20    witem -> STRING
-Rule 21    numlist -> numlist COMMA number
-Rule 22    numlist -> number
-Rule 23    number -> INTEGER
-Rule 24    number -> FLOAT
+Rule 13    command -> WRITE LPAREN wlist RPAREN ending
+Rule 14    command -> WRITE error
+Rule 15    command -> WRITE LPAREN RPAREN ending
+Rule 16    command -> PROGRAM variable ending
+Rule 17    command -> VAR varlist COLON variable ending
+Rule 18    command -> VAR error
+Rule 19    command -> variable COLON variable ending
+Rule 20    command -> variable error
+Rule 21    command -> variable COLON EQUALS expr SEMI
+Rule 22    varlist -> varlist COMMA variable
+Rule 23    varlist -> variable
+Rule 24    expr -> INTEGER
+Rule 25    expr -> FLOAT
+Rule 26    expr -> variable
+Rule 27    expr -> expr PLUS expr
+Rule 28    expr -> expr MINUS expr
+Rule 29    expr -> expr TIMES expr
+Rule 30    expr -> expr DIVIDE expr
+Rule 31    expr -> expr POWER expr
+Rule 32    variable -> ID
+Rule 33    command -> END DOT
+Rule 34    command -> BEGIN
+Rule 35    ending -> SEMI
+Rule 36    wlist -> wlist COMMA ID
+Rule 37    wlist -> witem
+Rule 38    witem -> STRING
+Rule 39    numlist -> numlist COMMA number
+Rule 40    numlist -> number
+Rule 41    number -> INTEGER
+Rule 42    number -> FLOAT
 
 Terminals, with rules where they appear
 
-BEGIN                : 16
-COMMA                : 18 21
+BEGIN                : 34
+COLON                : 17 19 21
+COMMA                : 22 36 39
 DATA                 : 8 9
-DOT                  : 15
-END                  : 15
-FLOAT                : 24
-ID                   : 14 18
-INTEGER              : 4 5 7 23
-LPAREN               : 10 12
+DIVIDE               : 30
+DOT                  : 33
+END                  : 33
+EQUALS               : 21
+FLOAT                : 25 42
+ID                   : 32 36
+INTEGER              : 4 5 7 24 41
+LPAREN               : 10 12 13 15
+MINUS                : 28
 NEWLINE              : 4 5 6 7
-PROGRAM              : 13
-RPAREN               : 10 12
-SEMI                 : 17
-STRING               : 20
-VAR                  : 
+PLUS                 : 27
+POWER                : 31
+PROGRAM              : 16
+RPAREN               : 10 12 13 15
+SEMI                 : 21 35
+STRING               : 38
+TIMES                : 29
+VAR                  : 17 18
+WRITE                : 13 14 15
 WRITELN              : 10 11 12
-error                : 3 5 9 11
+error                : 3 5 9 11 14 18 20
 
 Nonterminals, with rules where they appear
 
 command              : 4
-ending               : 10 12 13
-number               : 21 22
-numlist              : 8 21
+ending               : 10 12 13 15 16 17 19
+expr                 : 21 27 27 28 28 29 29 30 30 31 31
+number               : 39 40
+numlist              : 8 39
 program              : 1 0
 statement            : 1 2
-variable             : 13
-witem                : 19
-wlist                : 10 18
+variable             : 16 17 19 19 20 21 22 23 26
+varlist              : 17 22
+witem                : 37
+wlist                : 10 13 36
 
 Parsing method: LALR
 
@@ -126,19 +150,32 @@ state 4
     (10) command -> . WRITELN LPAREN wlist RPAREN ending
     (11) command -> . WRITELN error
     (12) command -> . WRITELN LPAREN RPAREN ending
-    (13) command -> . PROGRAM variable ending
-    (15) command -> . END DOT
-    (16) command -> . BEGIN
+    (13) command -> . WRITE LPAREN wlist RPAREN ending
+    (14) command -> . WRITE error
+    (15) command -> . WRITE LPAREN RPAREN ending
+    (16) command -> . PROGRAM variable ending
+    (17) command -> . VAR varlist COLON variable ending
+    (18) command -> . VAR error
+    (19) command -> . variable COLON variable ending
+    (20) command -> . variable error
+    (21) command -> . variable COLON EQUALS expr SEMI
+    (33) command -> . END DOT
+    (34) command -> . BEGIN
+    (32) variable -> . ID
 
     error           shift and go to state 9
     NEWLINE         shift and go to state 8
     DATA            shift and go to state 10
     WRITELN         shift and go to state 11
-    PROGRAM         shift and go to state 12
-    END             shift and go to state 13
-    BEGIN           shift and go to state 14
+    WRITE           shift and go to state 12
+    PROGRAM         shift and go to state 13
+    VAR             shift and go to state 15
+    END             shift and go to state 16
+    BEGIN           shift and go to state 17
+    ID              shift and go to state 18
 
     command                        shift and go to state 7
+    variable                       shift and go to state 14
 
 state 5
 
@@ -162,7 +199,7 @@ state 7
 
     (4) statement -> INTEGER command . NEWLINE
 
-    NEWLINE         shift and go to state 15
+    NEWLINE         shift and go to state 19
 
 
 state 8
@@ -178,24 +215,24 @@ state 9
 
     (5) statement -> INTEGER error . NEWLINE
 
-    NEWLINE         shift and go to state 16
+    NEWLINE         shift and go to state 20
 
 
 state 10
 
     (8) command -> DATA . numlist
     (9) command -> DATA . error
-    (21) numlist -> . numlist COMMA number
-    (22) numlist -> . number
-    (23) number -> . INTEGER
-    (24) number -> . FLOAT
+    (39) numlist -> . numlist COMMA number
+    (40) numlist -> . number
+    (41) number -> . INTEGER
+    (42) number -> . FLOAT
 
-    error           shift and go to state 18
-    INTEGER         shift and go to state 20
-    FLOAT           shift and go to state 21
+    error           shift and go to state 22
+    INTEGER         shift and go to state 24
+    FLOAT           shift and go to state 25
 
-    numlist                        shift and go to state 17
-    number                         shift and go to state 19
+    numlist                        shift and go to state 21
+    number                         shift and go to state 23
 
 state 11
 
@@ -203,34 +240,83 @@ state 11
     (11) command -> WRITELN . error
     (12) command -> WRITELN . LPAREN RPAREN ending
 
-    LPAREN          shift and go to state 22
-    error           shift and go to state 23
+    LPAREN          shift and go to state 26
+    error           shift and go to state 27
 
 
 state 12
 
-    (13) command -> PROGRAM . variable ending
-    (14) variable -> . ID
+    (13) command -> WRITE . LPAREN wlist RPAREN ending
+    (14) command -> WRITE . error
+    (15) command -> WRITE . LPAREN RPAREN ending
 
-    ID              shift and go to state 25
+    LPAREN          shift and go to state 28
+    error           shift and go to state 29
 
-    variable                       shift and go to state 24
 
 state 13
 
-    (15) command -> END . DOT
+    (16) command -> PROGRAM . variable ending
+    (32) variable -> . ID
 
-    DOT             shift and go to state 26
+    ID              shift and go to state 18
 
+    variable                       shift and go to state 30
 
 state 14
 
-    (16) command -> BEGIN .
+    (19) command -> variable . COLON variable ending
+    (20) command -> variable . error
+    (21) command -> variable . COLON EQUALS expr SEMI
 
-    NEWLINE         reduce using rule 16 (command -> BEGIN .)
+    COLON           shift and go to state 31
+    error           shift and go to state 32
 
 
 state 15
+
+    (17) command -> VAR . varlist COLON variable ending
+    (18) command -> VAR . error
+    (22) varlist -> . varlist COMMA variable
+    (23) varlist -> . variable
+    (32) variable -> . ID
+
+    error           shift and go to state 35
+    ID              shift and go to state 18
+
+    varlist                        shift and go to state 33
+    variable                       shift and go to state 34
+
+state 16
+
+    (33) command -> END . DOT
+
+    DOT             shift and go to state 36
+
+
+state 17
+
+    (34) command -> BEGIN .
+
+    NEWLINE         reduce using rule 34 (command -> BEGIN .)
+
+
+state 18
+
+    (32) variable -> ID .
+
+    COLON           reduce using rule 32 (variable -> ID .)
+    error           reduce using rule 32 (variable -> ID .)
+    SEMI            reduce using rule 32 (variable -> ID .)
+    COMMA           reduce using rule 32 (variable -> ID .)
+    PLUS            reduce using rule 32 (variable -> ID .)
+    MINUS           reduce using rule 32 (variable -> ID .)
+    TIMES           reduce using rule 32 (variable -> ID .)
+    DIVIDE          reduce using rule 32 (variable -> ID .)
+    POWER           reduce using rule 32 (variable -> ID .)
+
+
+state 19
 
     (4) statement -> INTEGER command NEWLINE .
 
@@ -239,7 +325,7 @@ state 15
     $end            reduce using rule 4 (statement -> INTEGER command NEWLINE .)
 
 
-state 16
+state 20
 
     (5) statement -> INTEGER error NEWLINE .
 
@@ -248,191 +334,694 @@ state 16
     $end            reduce using rule 5 (statement -> INTEGER error NEWLINE .)
 
 
-state 17
+state 21
 
     (8) command -> DATA numlist .
-    (21) numlist -> numlist . COMMA number
+    (39) numlist -> numlist . COMMA number
 
     NEWLINE         reduce using rule 8 (command -> DATA numlist .)
-    COMMA           shift and go to state 27
+    COMMA           shift and go to state 37
 
 
-state 18
+state 22
 
     (9) command -> DATA error .
 
     NEWLINE         reduce using rule 9 (command -> DATA error .)
 
 
-state 19
+state 23
 
-    (22) numlist -> number .
+    (40) numlist -> number .
 
-    COMMA           reduce using rule 22 (numlist -> number .)
-    NEWLINE         reduce using rule 22 (numlist -> number .)
-
-
-state 20
-
-    (23) number -> INTEGER .
-
-    COMMA           reduce using rule 23 (number -> INTEGER .)
-    NEWLINE         reduce using rule 23 (number -> INTEGER .)
+    COMMA           reduce using rule 40 (numlist -> number .)
+    NEWLINE         reduce using rule 40 (numlist -> number .)
 
 
-state 21
+state 24
 
-    (24) number -> FLOAT .
+    (41) number -> INTEGER .
 
-    COMMA           reduce using rule 24 (number -> FLOAT .)
-    NEWLINE         reduce using rule 24 (number -> FLOAT .)
+    COMMA           reduce using rule 41 (number -> INTEGER .)
+    NEWLINE         reduce using rule 41 (number -> INTEGER .)
 
 
-state 22
+state 25
+
+    (42) number -> FLOAT .
+
+    COMMA           reduce using rule 42 (number -> FLOAT .)
+    NEWLINE         reduce using rule 42 (number -> FLOAT .)
+
+
+state 26
 
     (10) command -> WRITELN LPAREN . wlist RPAREN ending
     (12) command -> WRITELN LPAREN . RPAREN ending
-    (18) wlist -> . wlist COMMA ID
-    (19) wlist -> . witem
-    (20) witem -> . STRING
+    (36) wlist -> . wlist COMMA ID
+    (37) wlist -> . witem
+    (38) witem -> . STRING
 
-    RPAREN          shift and go to state 29
-    STRING          shift and go to state 31
+    RPAREN          shift and go to state 39
+    STRING          shift and go to state 41
 
-    wlist                          shift and go to state 28
-    witem                          shift and go to state 30
+    wlist                          shift and go to state 38
+    witem                          shift and go to state 40
 
-state 23
+state 27
 
     (11) command -> WRITELN error .
 
     NEWLINE         reduce using rule 11 (command -> WRITELN error .)
 
 
-state 24
-
-    (13) command -> PROGRAM variable . ending
-    (17) ending -> . SEMI
-
-    SEMI            shift and go to state 33
-
-    ending                         shift and go to state 32
-
-state 25
-
-    (14) variable -> ID .
-
-    SEMI            reduce using rule 14 (variable -> ID .)
-
-
-state 26
-
-    (15) command -> END DOT .
-
-    NEWLINE         reduce using rule 15 (command -> END DOT .)
-
-
-state 27
-
-    (21) numlist -> numlist COMMA . number
-    (23) number -> . INTEGER
-    (24) number -> . FLOAT
-
-    INTEGER         shift and go to state 20
-    FLOAT           shift and go to state 21
-
-    number                         shift and go to state 34
-
 state 28
 
-    (10) command -> WRITELN LPAREN wlist . RPAREN ending
-    (18) wlist -> wlist . COMMA ID
+    (13) command -> WRITE LPAREN . wlist RPAREN ending
+    (15) command -> WRITE LPAREN . RPAREN ending
+    (36) wlist -> . wlist COMMA ID
+    (37) wlist -> . witem
+    (38) witem -> . STRING
 
-    RPAREN          shift and go to state 35
-    COMMA           shift and go to state 36
+    RPAREN          shift and go to state 43
+    STRING          shift and go to state 41
 
+    wlist                          shift and go to state 42
+    witem                          shift and go to state 40
 
 state 29
 
-    (12) command -> WRITELN LPAREN RPAREN . ending
-    (17) ending -> . SEMI
+    (14) command -> WRITE error .
 
-    SEMI            shift and go to state 33
+    NEWLINE         reduce using rule 14 (command -> WRITE error .)
 
-    ending                         shift and go to state 37
 
 state 30
 
-    (19) wlist -> witem .
+    (16) command -> PROGRAM variable . ending
+    (35) ending -> . SEMI
 
-    RPAREN          reduce using rule 19 (wlist -> witem .)
-    COMMA           reduce using rule 19 (wlist -> witem .)
+    SEMI            shift and go to state 45
 
+    ending                         shift and go to state 44
 
 state 31
 
-    (20) witem -> STRING .
+    (19) command -> variable COLON . variable ending
+    (21) command -> variable COLON . EQUALS expr SEMI
+    (32) variable -> . ID
 
-    RPAREN          reduce using rule 20 (witem -> STRING .)
-    COMMA           reduce using rule 20 (witem -> STRING .)
+    EQUALS          shift and go to state 47
+    ID              shift and go to state 18
 
+    variable                       shift and go to state 46
 
 state 32
 
-    (13) command -> PROGRAM variable ending .
+    (20) command -> variable error .
 
-    NEWLINE         reduce using rule 13 (command -> PROGRAM variable ending .)
+    NEWLINE         reduce using rule 20 (command -> variable error .)
 
 
 state 33
 
-    (17) ending -> SEMI .
+    (17) command -> VAR varlist . COLON variable ending
+    (22) varlist -> varlist . COMMA variable
 
-    NEWLINE         reduce using rule 17 (ending -> SEMI .)
+    COLON           shift and go to state 48
+    COMMA           shift and go to state 49
 
 
 state 34
 
-    (21) numlist -> numlist COMMA number .
+    (23) varlist -> variable .
 
-    COMMA           reduce using rule 21 (numlist -> numlist COMMA number .)
-    NEWLINE         reduce using rule 21 (numlist -> numlist COMMA number .)
+    COLON           reduce using rule 23 (varlist -> variable .)
+    COMMA           reduce using rule 23 (varlist -> variable .)
 
 
 state 35
 
-    (10) command -> WRITELN LPAREN wlist RPAREN . ending
-    (17) ending -> . SEMI
+    (18) command -> VAR error .
 
-    SEMI            shift and go to state 33
+    NEWLINE         reduce using rule 18 (command -> VAR error .)
 
-    ending                         shift and go to state 38
 
 state 36
 
-    (18) wlist -> wlist COMMA . ID
+    (33) command -> END DOT .
 
-    ID              shift and go to state 39
+    NEWLINE         reduce using rule 33 (command -> END DOT .)
 
 
 state 37
+
+    (39) numlist -> numlist COMMA . number
+    (41) number -> . INTEGER
+    (42) number -> . FLOAT
+
+    INTEGER         shift and go to state 24
+    FLOAT           shift and go to state 25
+
+    number                         shift and go to state 50
+
+state 38
+
+    (10) command -> WRITELN LPAREN wlist . RPAREN ending
+    (36) wlist -> wlist . COMMA ID
+
+    RPAREN          shift and go to state 51
+    COMMA           shift and go to state 52
+
+
+state 39
+
+    (12) command -> WRITELN LPAREN RPAREN . ending
+    (35) ending -> . SEMI
+
+    SEMI            shift and go to state 45
+
+    ending                         shift and go to state 53
+
+state 40
+
+    (37) wlist -> witem .
+
+    RPAREN          reduce using rule 37 (wlist -> witem .)
+    COMMA           reduce using rule 37 (wlist -> witem .)
+
+
+state 41
+
+    (38) witem -> STRING .
+
+    RPAREN          reduce using rule 38 (witem -> STRING .)
+    COMMA           reduce using rule 38 (witem -> STRING .)
+
+
+state 42
+
+    (13) command -> WRITE LPAREN wlist . RPAREN ending
+    (36) wlist -> wlist . COMMA ID
+
+    RPAREN          shift and go to state 54
+    COMMA           shift and go to state 52
+
+
+state 43
+
+    (15) command -> WRITE LPAREN RPAREN . ending
+    (35) ending -> . SEMI
+
+    SEMI            shift and go to state 45
+
+    ending                         shift and go to state 55
+
+state 44
+
+    (16) command -> PROGRAM variable ending .
+
+    NEWLINE         reduce using rule 16 (command -> PROGRAM variable ending .)
+
+
+state 45
+
+    (35) ending -> SEMI .
+
+    NEWLINE         reduce using rule 35 (ending -> SEMI .)
+
+
+state 46
+
+    (19) command -> variable COLON variable . ending
+    (35) ending -> . SEMI
+
+    SEMI            shift and go to state 45
+
+    ending                         shift and go to state 56
+
+state 47
+
+    (21) command -> variable COLON EQUALS . expr SEMI
+    (24) expr -> . INTEGER
+    (25) expr -> . FLOAT
+    (26) expr -> . variable
+    (27) expr -> . expr PLUS expr
+    (28) expr -> . expr MINUS expr
+    (29) expr -> . expr TIMES expr
+    (30) expr -> . expr DIVIDE expr
+    (31) expr -> . expr POWER expr
+    (32) variable -> . ID
+
+    INTEGER         shift and go to state 59
+    FLOAT           shift and go to state 60
+    ID              shift and go to state 18
+
+    variable                       shift and go to state 57
+    expr                           shift and go to state 58
+
+state 48
+
+    (17) command -> VAR varlist COLON . variable ending
+    (32) variable -> . ID
+
+    ID              shift and go to state 18
+
+    variable                       shift and go to state 61
+
+state 49
+
+    (22) varlist -> varlist COMMA . variable
+    (32) variable -> . ID
+
+    ID              shift and go to state 18
+
+    variable                       shift and go to state 62
+
+state 50
+
+    (39) numlist -> numlist COMMA number .
+
+    COMMA           reduce using rule 39 (numlist -> numlist COMMA number .)
+    NEWLINE         reduce using rule 39 (numlist -> numlist COMMA number .)
+
+
+state 51
+
+    (10) command -> WRITELN LPAREN wlist RPAREN . ending
+    (35) ending -> . SEMI
+
+    SEMI            shift and go to state 45
+
+    ending                         shift and go to state 63
+
+state 52
+
+    (36) wlist -> wlist COMMA . ID
+
+    ID              shift and go to state 64
+
+
+state 53
 
     (12) command -> WRITELN LPAREN RPAREN ending .
 
     NEWLINE         reduce using rule 12 (command -> WRITELN LPAREN RPAREN ending .)
 
 
-state 38
+state 54
+
+    (13) command -> WRITE LPAREN wlist RPAREN . ending
+    (35) ending -> . SEMI
+
+    SEMI            shift and go to state 45
+
+    ending                         shift and go to state 65
+
+state 55
+
+    (15) command -> WRITE LPAREN RPAREN ending .
+
+    NEWLINE         reduce using rule 15 (command -> WRITE LPAREN RPAREN ending .)
+
+
+state 56
+
+    (19) command -> variable COLON variable ending .
+
+    NEWLINE         reduce using rule 19 (command -> variable COLON variable ending .)
+
+
+state 57
+
+    (26) expr -> variable .
+
+    SEMI            reduce using rule 26 (expr -> variable .)
+    PLUS            reduce using rule 26 (expr -> variable .)
+    MINUS           reduce using rule 26 (expr -> variable .)
+    TIMES           reduce using rule 26 (expr -> variable .)
+    DIVIDE          reduce using rule 26 (expr -> variable .)
+    POWER           reduce using rule 26 (expr -> variable .)
+
+
+state 58
+
+    (21) command -> variable COLON EQUALS expr . SEMI
+    (27) expr -> expr . PLUS expr
+    (28) expr -> expr . MINUS expr
+    (29) expr -> expr . TIMES expr
+    (30) expr -> expr . DIVIDE expr
+    (31) expr -> expr . POWER expr
+
+    SEMI            shift and go to state 66
+    PLUS            shift and go to state 67
+    MINUS           shift and go to state 68
+    TIMES           shift and go to state 69
+    DIVIDE          shift and go to state 70
+    POWER           shift and go to state 71
+
+
+state 59
+
+    (24) expr -> INTEGER .
+
+    SEMI            reduce using rule 24 (expr -> INTEGER .)
+    PLUS            reduce using rule 24 (expr -> INTEGER .)
+    MINUS           reduce using rule 24 (expr -> INTEGER .)
+    TIMES           reduce using rule 24 (expr -> INTEGER .)
+    DIVIDE          reduce using rule 24 (expr -> INTEGER .)
+    POWER           reduce using rule 24 (expr -> INTEGER .)
+
+
+state 60
+
+    (25) expr -> FLOAT .
+
+    SEMI            reduce using rule 25 (expr -> FLOAT .)
+    PLUS            reduce using rule 25 (expr -> FLOAT .)
+    MINUS           reduce using rule 25 (expr -> FLOAT .)
+    TIMES           reduce using rule 25 (expr -> FLOAT .)
+    DIVIDE          reduce using rule 25 (expr -> FLOAT .)
+    POWER           reduce using rule 25 (expr -> FLOAT .)
+
+
+state 61
+
+    (17) command -> VAR varlist COLON variable . ending
+    (35) ending -> . SEMI
+
+    SEMI            shift and go to state 45
+
+    ending                         shift and go to state 72
+
+state 62
+
+    (22) varlist -> varlist COMMA variable .
+
+    COLON           reduce using rule 22 (varlist -> varlist COMMA variable .)
+    COMMA           reduce using rule 22 (varlist -> varlist COMMA variable .)
+
+
+state 63
 
     (10) command -> WRITELN LPAREN wlist RPAREN ending .
 
     NEWLINE         reduce using rule 10 (command -> WRITELN LPAREN wlist RPAREN ending .)
 
 
-state 39
+state 64
 
-    (18) wlist -> wlist COMMA ID .
+    (36) wlist -> wlist COMMA ID .
 
-    RPAREN          reduce using rule 18 (wlist -> wlist COMMA ID .)
-    COMMA           reduce using rule 18 (wlist -> wlist COMMA ID .)
+    RPAREN          reduce using rule 36 (wlist -> wlist COMMA ID .)
+    COMMA           reduce using rule 36 (wlist -> wlist COMMA ID .)
 
+
+state 65
+
+    (13) command -> WRITE LPAREN wlist RPAREN ending .
+
+    NEWLINE         reduce using rule 13 (command -> WRITE LPAREN wlist RPAREN ending .)
+
+
+state 66
+
+    (21) command -> variable COLON EQUALS expr SEMI .
+
+    NEWLINE         reduce using rule 21 (command -> variable COLON EQUALS expr SEMI .)
+
+
+state 67
+
+    (27) expr -> expr PLUS . expr
+    (24) expr -> . INTEGER
+    (25) expr -> . FLOAT
+    (26) expr -> . variable
+    (27) expr -> . expr PLUS expr
+    (28) expr -> . expr MINUS expr
+    (29) expr -> . expr TIMES expr
+    (30) expr -> . expr DIVIDE expr
+    (31) expr -> . expr POWER expr
+    (32) variable -> . ID
+
+    INTEGER         shift and go to state 59
+    FLOAT           shift and go to state 60
+    ID              shift and go to state 18
+
+    expr                           shift and go to state 73
+    variable                       shift and go to state 57
+
+state 68
+
+    (28) expr -> expr MINUS . expr
+    (24) expr -> . INTEGER
+    (25) expr -> . FLOAT
+    (26) expr -> . variable
+    (27) expr -> . expr PLUS expr
+    (28) expr -> . expr MINUS expr
+    (29) expr -> . expr TIMES expr
+    (30) expr -> . expr DIVIDE expr
+    (31) expr -> . expr POWER expr
+    (32) variable -> . ID
+
+    INTEGER         shift and go to state 59
+    FLOAT           shift and go to state 60
+    ID              shift and go to state 18
+
+    expr                           shift and go to state 74
+    variable                       shift and go to state 57
+
+state 69
+
+    (29) expr -> expr TIMES . expr
+    (24) expr -> . INTEGER
+    (25) expr -> . FLOAT
+    (26) expr -> . variable
+    (27) expr -> . expr PLUS expr
+    (28) expr -> . expr MINUS expr
+    (29) expr -> . expr TIMES expr
+    (30) expr -> . expr DIVIDE expr
+    (31) expr -> . expr POWER expr
+    (32) variable -> . ID
+
+    INTEGER         shift and go to state 59
+    FLOAT           shift and go to state 60
+    ID              shift and go to state 18
+
+    expr                           shift and go to state 75
+    variable                       shift and go to state 57
+
+state 70
+
+    (30) expr -> expr DIVIDE . expr
+    (24) expr -> . INTEGER
+    (25) expr -> . FLOAT
+    (26) expr -> . variable
+    (27) expr -> . expr PLUS expr
+    (28) expr -> . expr MINUS expr
+    (29) expr -> . expr TIMES expr
+    (30) expr -> . expr DIVIDE expr
+    (31) expr -> . expr POWER expr
+    (32) variable -> . ID
+
+    INTEGER         shift and go to state 59
+    FLOAT           shift and go to state 60
+    ID              shift and go to state 18
+
+    expr                           shift and go to state 76
+    variable                       shift and go to state 57
+
+state 71
+
+    (31) expr -> expr POWER . expr
+    (24) expr -> . INTEGER
+    (25) expr -> . FLOAT
+    (26) expr -> . variable
+    (27) expr -> . expr PLUS expr
+    (28) expr -> . expr MINUS expr
+    (29) expr -> . expr TIMES expr
+    (30) expr -> . expr DIVIDE expr
+    (31) expr -> . expr POWER expr
+    (32) variable -> . ID
+
+    INTEGER         shift and go to state 59
+    FLOAT           shift and go to state 60
+    ID              shift and go to state 18
+
+    expr                           shift and go to state 77
+    variable                       shift and go to state 57
+
+state 72
+
+    (17) command -> VAR varlist COLON variable ending .
+
+    NEWLINE         reduce using rule 17 (command -> VAR varlist COLON variable ending .)
+
+
+state 73
+
+    (27) expr -> expr PLUS expr .
+    (27) expr -> expr . PLUS expr
+    (28) expr -> expr . MINUS expr
+    (29) expr -> expr . TIMES expr
+    (30) expr -> expr . DIVIDE expr
+    (31) expr -> expr . POWER expr
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+    SEMI            reduce using rule 27 (expr -> expr PLUS expr .)
+    PLUS            shift and go to state 67
+    MINUS           shift and go to state 68
+    TIMES           shift and go to state 69
+    DIVIDE          shift and go to state 70
+    POWER           shift and go to state 71
+
+  ! PLUS            [ reduce using rule 27 (expr -> expr PLUS expr .) ]
+  ! MINUS           [ reduce using rule 27 (expr -> expr PLUS expr .) ]
+  ! TIMES           [ reduce using rule 27 (expr -> expr PLUS expr .) ]
+  ! DIVIDE          [ reduce using rule 27 (expr -> expr PLUS expr .) ]
+  ! POWER           [ reduce using rule 27 (expr -> expr PLUS expr .) ]
+
+
+state 74
+
+    (28) expr -> expr MINUS expr .
+    (27) expr -> expr . PLUS expr
+    (28) expr -> expr . MINUS expr
+    (29) expr -> expr . TIMES expr
+    (30) expr -> expr . DIVIDE expr
+    (31) expr -> expr . POWER expr
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+    SEMI            reduce using rule 28 (expr -> expr MINUS expr .)
+    PLUS            shift and go to state 67
+    MINUS           shift and go to state 68
+    TIMES           shift and go to state 69
+    DIVIDE          shift and go to state 70
+    POWER           shift and go to state 71
+
+  ! PLUS            [ reduce using rule 28 (expr -> expr MINUS expr .) ]
+  ! MINUS           [ reduce using rule 28 (expr -> expr MINUS expr .) ]
+  ! TIMES           [ reduce using rule 28 (expr -> expr MINUS expr .) ]
+  ! DIVIDE          [ reduce using rule 28 (expr -> expr MINUS expr .) ]
+  ! POWER           [ reduce using rule 28 (expr -> expr MINUS expr .) ]
+
+
+state 75
+
+    (29) expr -> expr TIMES expr .
+    (27) expr -> expr . PLUS expr
+    (28) expr -> expr . MINUS expr
+    (29) expr -> expr . TIMES expr
+    (30) expr -> expr . DIVIDE expr
+    (31) expr -> expr . POWER expr
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+    SEMI            reduce using rule 29 (expr -> expr TIMES expr .)
+    PLUS            shift and go to state 67
+    MINUS           shift and go to state 68
+    TIMES           shift and go to state 69
+    DIVIDE          shift and go to state 70
+    POWER           shift and go to state 71
+
+  ! PLUS            [ reduce using rule 29 (expr -> expr TIMES expr .) ]
+  ! MINUS           [ reduce using rule 29 (expr -> expr TIMES expr .) ]
+  ! TIMES           [ reduce using rule 29 (expr -> expr TIMES expr .) ]
+  ! DIVIDE          [ reduce using rule 29 (expr -> expr TIMES expr .) ]
+  ! POWER           [ reduce using rule 29 (expr -> expr TIMES expr .) ]
+
+
+state 76
+
+    (30) expr -> expr DIVIDE expr .
+    (27) expr -> expr . PLUS expr
+    (28) expr -> expr . MINUS expr
+    (29) expr -> expr . TIMES expr
+    (30) expr -> expr . DIVIDE expr
+    (31) expr -> expr . POWER expr
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+    SEMI            reduce using rule 30 (expr -> expr DIVIDE expr .)
+    PLUS            shift and go to state 67
+    MINUS           shift and go to state 68
+    TIMES           shift and go to state 69
+    DIVIDE          shift and go to state 70
+    POWER           shift and go to state 71
+
+  ! PLUS            [ reduce using rule 30 (expr -> expr DIVIDE expr .) ]
+  ! MINUS           [ reduce using rule 30 (expr -> expr DIVIDE expr .) ]
+  ! TIMES           [ reduce using rule 30 (expr -> expr DIVIDE expr .) ]
+  ! DIVIDE          [ reduce using rule 30 (expr -> expr DIVIDE expr .) ]
+  ! POWER           [ reduce using rule 30 (expr -> expr DIVIDE expr .) ]
+
+
+state 77
+
+    (31) expr -> expr POWER expr .
+    (27) expr -> expr . PLUS expr
+    (28) expr -> expr . MINUS expr
+    (29) expr -> expr . TIMES expr
+    (30) expr -> expr . DIVIDE expr
+    (31) expr -> expr . POWER expr
+
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+  ! shift/reduce conflict for POWER resolved as shift
+    SEMI            reduce using rule 31 (expr -> expr POWER expr .)
+    PLUS            shift and go to state 67
+    MINUS           shift and go to state 68
+    TIMES           shift and go to state 69
+    DIVIDE          shift and go to state 70
+    POWER           shift and go to state 71
+
+  ! PLUS            [ reduce using rule 31 (expr -> expr POWER expr .) ]
+  ! MINUS           [ reduce using rule 31 (expr -> expr POWER expr .) ]
+  ! TIMES           [ reduce using rule 31 (expr -> expr POWER expr .) ]
+  ! DIVIDE          [ reduce using rule 31 (expr -> expr POWER expr .) ]
+  ! POWER           [ reduce using rule 31 (expr -> expr POWER expr .) ]
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for PLUS in state 73 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 73 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 73 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 73 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 73 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 74 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 74 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 74 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 74 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 74 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 75 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 75 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 75 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 75 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 75 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 76 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 76 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 76 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 76 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 76 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 77 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 77 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 77 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 77 resolved as shift
+WARNING: shift/reduce conflict for POWER in state 77 resolved as shift

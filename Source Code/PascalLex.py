@@ -14,7 +14,8 @@ keywords =('BEGIN',
     # 'End' ,
      'END', 'PROGRAM', 'WRITELN', 
      'VAR', 
-    # 'IF','ELSE' ,'THEN', 'FOR','DO', 'WRITE', 
+    # 'IF','ELSE' ,'THEN', 'FOR','DO', 
+    'WRITE', 
     'DATA',
     # 'BLANK'
     )
@@ -27,11 +28,11 @@ tokens =keywords +(
     'STRING', 'NEWLINE', 
     'DOT', 
     'INTEGER', 'FLOAT',
-    # 'REAL',
-    # 'EQUALS',
-    # 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'POWER', 
+    'EQUALS',
+    'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'POWER', 
     # 'LT',
-    # 'LE', 'GT', 'GE', 'NE', 'COLON'
+    # 'LE', 'GT', 'GE', 'NE', 
+    'COLON'
     )
 
 t_ignore = ' \t'
@@ -50,12 +51,12 @@ def t_PROGRAM(t):
 #     r'\ '
 #     pass
 
-# t_EQUALS = r'='
-# t_PLUS = r'\+'
-# t_MINUS = r'-'
-# t_TIMES = r'\*'
-# t_POWER =r'\^'
-# t_DIVIDE = r'/'
+t_EQUALS = r'='
+t_PLUS = r'\+'
+t_MINUS = r'-'
+t_TIMES = r'\*'
+t_POWER =r'\^'
+t_DIVIDE = r'/'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 # t_LT = r'<'
@@ -68,7 +69,7 @@ t_SEMI = r';'
 t_INTEGER = r'\d+'
 t_FLOAT = r'((\d*\.\d+)(E[\+-]?\d+)?|([1-9]\d*E[\+-]?\d+))'
 t_STRING = r'\'.*?\''
-# t_COLON = r':'
+t_COLON = r':'
 t_DOT = r'.'
 
 def t_NEWLINE(t):
