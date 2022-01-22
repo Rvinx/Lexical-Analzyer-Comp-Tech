@@ -82,7 +82,7 @@ def p_command_data_bad(p):
     '''command : DATA error'''
     p[0] = "MALFORMED NUMBER LIST IN DATA"
 
-# ===================================================
+# ======================================================
 # WRITELN STATEMENT
 def p_command_writeln(p):
     '''command : WRITELN LPAREN wlist RPAREN ending'''
@@ -110,14 +110,18 @@ def p_command_write_bad(p):
 def p_command_write_empty(p):
     '''command : WRITE LPAREN RPAREN ending'''
     p[0] = ('WRITE', [], None, p[4])
+# ======================================================
 
+
+# ======================================================
 # SOME STATEMENT
 def p_command_program(p):
     '''command : PROGRAM variable ending'''
     p[0] = ('PROGRAM', p[2], p[3])
     # print(p[0])
-# ===================================================
-# ===================================================
+# ======================================================
+
+# ======================================================
 # Var statement
 
 def p_command_var(p):
@@ -132,7 +136,7 @@ def p_command_var_error(p):
 # Declare without var
 def p_command_declare(p):
     '''command : variable COLON variable ending'''
-    p[0] = ('DECLARE', p[1], p[3], p[4])
+    p[0] = ('', p[1], p[3], p[4])
     # print(p[3])
 
 def p_command_declare_error(p):
@@ -171,7 +175,7 @@ def p_expr_binary(p):
             | expr POWER expr'''
 
     p[0] = ('BINOP', p[2], p[1], p[3])
-# ==========================================================
+# ======================================================
 
 def p_variable(p):
     '''variable : ID'''
@@ -196,20 +200,26 @@ def p_ending(p):
 # lanjut di line 172
 
 def p_wlist(p):
-    '''wlist   : wlist COMMA ID
+    '''wlist   : wlist COMMA witem
                | witem'''
     if len(p) > 3:
         p[0] = p[1]
         p[0].append(p[3])
+        # print(p[0])
     else:
         # print('asd')
         p[0] = [p[1]]
+        # print(p[0])
 
 def p_item_string(p):
     '''witem : STRING'''
     # print('sadfasdfa')
     p[0] = (p[1][1:-1], None)
     # print(p[1][1:-1])
+
+def p_item_expr(p):
+    '''witem : expr'''
+    p[0] = ("", p[1])
 
 # diline 444
 # def w_item_string_expr(p):
@@ -258,5 +268,5 @@ def parse(data, debug=0):
     if pparser.error:
         # print(pparser.error)
         return None
-    print(p)
+    # print(p)
     return p

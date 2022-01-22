@@ -66,7 +66,7 @@ class PascalInterpreter:
         var = target
         # print(var)
         self.vars[var] = self.eval(value)
-        print(self.vars[var])
+        # print(self.vars[var])
 
 
     # Change the current line number
@@ -121,7 +121,7 @@ class PascalInterpreter:
                 out = ""
                 for label, val in plist:
                     if out:
-                        out += ' ' * (15 - (len(out) % 15))
+                        out += ' ' * (3 - (len(out) % 15))
                         # print('halo')
                     out += label
                     if val:
@@ -167,8 +167,8 @@ class PascalInterpreter:
                         break
                         # return
 
-            elif op == 'DECLARE':
-                print('')
+            # elif op == 'DECLARE':
+            #     print('')
                 
             self.pc += 1
             

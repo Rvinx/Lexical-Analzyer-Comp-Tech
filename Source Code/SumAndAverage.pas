@@ -8,5 +8,9 @@
 8 num3:=30;
 9 sum:=num1+num2+num3;
 10 avg:=sum/3;
-12 WRITELN('berhasil');
+11 WRITELN('Num1 is ',num1);
+12 WRITELN('Num2 is ',num2);
+13 WRITELN('Num3 is ',num3);
+14 WRITELN('Sum 3 numbers is ',sum);
+15 WRITELN('Average is ',avg);
 66 END.
