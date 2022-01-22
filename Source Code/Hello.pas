@@ -1,0 +1,4 @@
+1 PROGRAM HELLOWORLD;
+2 BEGIN
+3 WRITELN('Hello, world!');
+4 END.

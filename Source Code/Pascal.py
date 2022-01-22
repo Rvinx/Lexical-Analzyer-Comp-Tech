@@ -12,12 +12,16 @@ import PascalInterpreter
 # If a runtime error occurs, we bail out and enter
 # interactive mode below
 if len(sys.argv) == 2:
+    
     with open(sys.argv[1]) as f:
         data = f.read()
     prog = PascalParse.parse(data)
+    # print('yooo')
     if not prog:
         raise SystemExit
-    b = PascalInterpreter.BasicInterpreter(prog)
+    # print('HAII')
+    b = PascalInterpreter.PascalInterpreter(prog)
+    # print('yooo')
     try:
         b.run()
         raise SystemExit

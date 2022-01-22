@@ -17,21 +17,15 @@ tokens =keywords +('COMMA', 'SEMI_COLON', 'ID', 'OPEN_PAREN', 'CLOSE_PAREN',
 'EQUALS', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'POWER', 'LOWER_THAN',
 'LOWER_EQUAL', 'GREATER_THAN', 'GREATER_EQUAL', 'NOT_EQUAL', 'COLON', 'BLOCK')
 
-t_ignore = ' \t'
-
 def t_ID(t):
     r'[A-Za-z][A-Za-z0-9]*'
     if t.value.upper() in keywords:
         t.type = t.value.upper()
     return t
 
-# def t_REM(t):
-#     r'REM .*'
-#     return t
-
-# def t_space(t):
-#     r'\ '
-#     pass
+def t_space(t):
+    r'\ '
+    pass
 
 t_EQUALS = r'='
 t_PLUS = r'\+'
@@ -60,8 +54,8 @@ def t_NEWLINE(t):
     t.lexer.lineno += 1
     return t
 
-# def t_BLOCK(t):
-#     r'\t+' 
+def t_BLOCK(t):
+    r'\t+' 
 
     return t
 
@@ -70,28 +64,28 @@ def t_error(t):
     print("Illegal character %s" % t.value[0])
     t.lexer.skip(1)
 
-lexer = lex.lex(debug=0)
+lexer = lex.lex()
 
-# data = 'PROGRAM LISTODDNUMBER; \n'
-# data = data + 'VAR num,oddnum: integer; \n'
-# data = data + 'BEGIN\n'
-# data = data + "\t WRITELN('List of Odd Number 1-100:'); \n"
-# data = data + '\t WRITELN; \n'
-# data = data + '\t FOR num:=1 TO 100 DO  \n'
-# data = data + '\t\t BEGIN\n'
-# data = data + '\t\t\t IF (num MOD 2)<>0 THEN \n'
-# data = data + "\t\t\t\t Begin \n"
-# data = data + '\t\t\t\t\t oddnum := num; \n'
-# data = data + "\t\t\t\t\t WRITE(oddnum,' '); \n"
-# data = data + "\t\t\t\t End; \n"
-# data = data + '\t\t\t End; \n'
-# data = data + 'END.'
+data = 'PROGRAM LISTODDNUMBER; \n'
+data = data + 'VAR num,oddnum: integer; \n'
+data = data + 'BEGIN\n'
+data = data + "\t WRITELN('List of Odd Number 1-100:'); \n"
+data = data + '\t WRITELN; \n'
+data = data + '\t FOR num:=1 TO 100 DO  \n'
+data = data + '\t\t BEGIN\n'
+data = data + '\t\t\t IF (num MOD 2)<>0 THEN \n'
+data = data + "\t\t\t\t Begin \n"
+data = data + '\t\t\t\t\t oddnum := num; \n'
+data = data + "\t\t\t\t\t WRITE(oddnum,' '); \n"
+data = data + "\t\t\t\t End; \n"
+data = data + '\t\t\t End; \n'
+data = data + 'END.'
 
-# lexer.input(data)
+lexer.input(data)
 
-# while True:
-#     tok = lexer.token()
-#     if not tok:
-#         break
-#     print(tok)
-#     print(' ')
+while True:
+    tok = lexer.token()
+    if not tok:
+        break
+    print(tok)
+    print(' ')

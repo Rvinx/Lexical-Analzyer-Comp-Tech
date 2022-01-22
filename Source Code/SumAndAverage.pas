@@ -1,0 +1,4 @@
+1 PROGRAM SUMANDAVERAGE;
+5 VAR num1,num2,num3: integer;
+2 BEGIN
+4 END.
