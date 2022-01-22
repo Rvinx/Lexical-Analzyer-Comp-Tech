@@ -1,6 +1,8 @@
+from genericpath import exists
 import sys
 import math
 import random
+from typing import final
 
 class PascalInterpreter:
     def __init__(self, prog):
@@ -8,7 +10,6 @@ class PascalInterpreter:
 
     # collect all data statements
     def collect_data(self):
-        # print('hello')
         self.data = []
         for lineno in self.stat:
             if self.prog[lineno][0] == 'DATA':
@@ -22,7 +23,6 @@ class PascalInterpreter:
         for lineno in self.stat:
             if self.prog[lineno][0] == 'END' and self.prog[lineno][1] == '.' and not has_end:
                 has_end = lineno
-                # print('END INSTRUCTION')
         if not has_end:
             print("NO END INSTRUCTION")
             self.error = 1
@@ -30,8 +30,6 @@ class PascalInterpreter:
         if has_end != lineno:
             print("END IS NOT LAST")
             self.error = 1
-    
-    # check loops line 51
 
     # Evaluate an expression line 69
     def eval(self, expr):
@@ -49,6 +47,8 @@ class PascalInterpreter:
                 return float(self.eval(expr[2])) / self.eval(expr[3])
             elif expr[1] == '^':
                 return abs(self.eval(expr[2]))**self.eval(expr[3])
+            elif expr[1] == 'MOD':
+                return self.eval(expr[2]) % self.eval(expr[3])
         elif etype == 'VARIABLE':
             var = expr[1]
             if var in self.vars:
@@ -140,16 +140,28 @@ class PascalInterpreter:
         if self.error:
             raise RuntimeError
         
+        # For flag, jika true, maka looping diulang
+        # dan kembali ke baris FOR
+        # deklarasi variabel
+        flag = 0
+        newval = 0
+
+        # 0 jika variabel for blm dibuat
+        # 1 jika variabel for sudah dibuat
+        initial_flag = 0
         while 1:
             line = self.stat[self.pc]
             instr = self.prog[line]
-            
+            # op2 = ''
+            # if len(instr) == 2:
+            #     op2 = instr[1]
             op = instr[0]
             # print(op)
             # END statements
             if op == 'END':
-                # print('asdf')
-                break
+                if len(instr) == 2:
+                    if instr[1] == '.':
+                        break
 
             # goto ga perlu
 
@@ -187,9 +199,11 @@ class PascalInterpreter:
             # ASSIGN STATEMENT
             elif op == 'ASSIGN':
                 # print(op)
-                target = instr[1]
-                value = instr[2]
-                self.assign(target, value)
+
+                if op == 'ASSIGN':
+                    target = instr[1]
+                    value = instr[2]
+                    self.assign(target, value)
                 # print(target)
             
             # VAR STATEMENT
@@ -207,6 +221,77 @@ class PascalInterpreter:
                         break
                         # return
 
+            # FOR STATEMENT
+            elif op == 'FOR':
+                # INISIALISASI VARIABEL FOR
+                loopvar = instr[1]
+
+                # VALUE AWAL
+                initialval = instr[2]
+
+                # VALUE AKHIR
+                finalval = int(instr[3][1])
+                # print(initialval)
+                # print(finalval)
+
+                # JIKA BENDERA AWAL ITU 0 (tandanya loop baru)
+                if initial_flag == 0:
+                    self.assign(loopvar, initialval)
+                    # newline = int(instr[4])
+                    # print(instr)
+                    # print('hai')
+                    # print(loopvar)
+
+                    # Initial newval jadi 1
+                    newval += int(initialval[1])
+                    # print(newval)
+                    initial_flag = 1
+                    continue
+                    # self.goto(newline)
+                    # print(instr[4])
+
+                # JIKA BENDERA AWAL ITU 1
+                elif initial_flag == 1:
+                    # print('asdf')
+                    # Next newval, misal dari 1 ke 2
+                    if newval < finalval:
+                        # print(newval)
+                        # newval += 1
+                        newNUM = ('NUM', newval)
+                        # print(newNUM)
+                        self.assign(loopvar, newNUM)
+                        # print(loopvar, newval)
+                        newline = instr[4]
+                        self.goto(int(newline))
+                        continue
+                    elif newval == finalval:
+                        newline = instr[4]
+                        flag = 1
+                        # print(newline)
+                        # continue
+                        # continue
+                        self.goto(int(newline))
+                        continue
+
+                # print(op)
+            
+            # ENDFOR
+            elif op == 'ENDFOR':
+                # Jika true, akan looping
+                if flag == 0:
+                    # Line number FOR
+                    newline = int(instr[2])
+                    # print('abang')
+                    newval += 1
+                    # print(finalval)
+                    # print(flag)
+                    self.goto(newline)
+                    continue
+                elif flag == 1:
+                    newline = int(instr[3])
+                    self.goto(newline)
+                    continue
+
             # IF STATEMENT
             elif op == 'IF':
                 relop = instr[1]
@@ -221,11 +306,12 @@ class PascalInterpreter:
                     continue
                 elif not(self.releval(relop)):
                     self.goto(int(toelse))
+                    continue
 
-            elif op == 'ELSE':
-                # relop = instr[1]
-                newline = instr[1]
-                self.goto(int(newline))
+            # elif op == 'ELSE':
+            #     # relop = instr[1]
+            #     newline = instr[1]
+            #     self.goto(int(newline))
             self.pc += 1
             
             
@@ -267,47 +353,9 @@ class PascalInterpreter:
                 if instr[2]:
                     _out += instr[2]
                 print(_out)
-            # elif op == 'LET':
-            #     print("%s LET %s = %s" %
-            #           (line, self.var_str(instr[1]), self.expr_str(instr[2])))
-            # elif op == 'READ':
-            #     _out = "%s READ " % line
-            #     first = 1
-            #     for r in instr[1]:
-            #         if not first:
-            #             _out += ","
-            #         _out += self.var_str(r)
-            #         first = 0
-            #     print(_out)
             elif op == 'IF':
                 print("%s IF %s THEN %d" %
                       (line, self.relexpr_str(instr[1]), instr[2]))
-            # elif op == 'GOTO' or op == 'GOSUB':
-            #     print("%s %s %s" % (line, op, instr[1]))
-            # elif op == 'FOR':
-            #     _out = "%s FOR %s = %s TO %s" % (
-            #         line, instr[1], self.expr_str(instr[2]), self.expr_str(instr[3]))
-            #     if instr[4]:
-            #         _out += " STEP %s" % (self.expr_str(instr[4]))
-            #     print(_out)
-            # elif op == 'NEXT':
-            #     print("%s NEXT %s" % (line, instr[1]))
-            # elif op == 'FUNC':
-            #     print("%s DEF %s(%s) = %s" %
-            #           (line, instr[1], instr[2], self.expr_str(instr[3])))
-            # elif op == 'DIM':
-            #     _out = "%s DIM " % line
-            #     first = 1
-            #     for vname, x, y in instr[1]:
-            #         if not first:
-            #             _out += ","
-            #         first = 0
-            #         if y == 0:
-            #             _out += "%s(%d)" % (vname, x)
-            #         else:
-            #             _out += "%s(%d,%d)" % (vname, x, y)
-
-            #     print(_out)
             elif op == 'DATA':
                 _out = "%s DATA " % line
                 first = 1

@@ -88,8 +88,8 @@ def p_command_writeln_bad(p):
     p[0] = "MALFORMED WRITELN STATEMENT"
 
 def p_command_writeln_empty(p):
-    '''command : WRITELN LPAREN RPAREN ending'''
-    p[0] = ('WRITELN', [], None, p[4])
+    '''command : WRITELN ending'''
+    p[0] = ('WRITELN', [], None, p[2])
 
 # WRITE STATEMENT
 def p_command_write(p):
@@ -166,7 +166,8 @@ def p_expr_binary(p):
             | expr MINUS expr
             | expr TIMES expr
             | expr DIVIDE expr
-            | expr POWER expr'''
+            | expr POWER expr
+            | expr MOD expr '''
 
     p[0] = ('BINOP', p[2], p[1], p[3])
 # ======================================================
@@ -210,17 +211,22 @@ def p_command_if_bad2(p):
     p[0] = "INVALID IF Statement"
 
 def p_command_else(p):
-    '''command : ELSE INTEGER'''
-    p[0] = ('ELSE', p[2])
+    '''command : ELSE'''
+    p[0] = ('ELSE',)
     # print(p[0])
 
 def p_command_endelseif(p):
     '''command : END ending'''
     p[0] = ('END', p[2])
 
+def p_command_endfor(p):
+    '''command : END ending INTEGER INTEGER'''
+    p[0] = ('ENDFOR', p[2], p[3], p[4])
+
 def p_command_endif(p):
     '''command : END INTEGER'''
     p[0] = ('END', p[2])
+    # print(p[0])
 
 def p_relexpr(p):
     '''relexpr : expr LT expr
@@ -230,6 +236,16 @@ def p_relexpr(p):
                | expr EQUALS expr
                | expr NE expr'''
     p[0] = ('RELOP', p[2], p[1], p[3])
+# ======================================================
+
+# ======================================================
+# FOR statement
+# Dengan bantuan line number untuk berpindah
+def p_command_for(p):
+    '''command : FOR variable COLON EQUALS expr TO expr DO INTEGER INTEGER'''
+    p[0] = ('FOR', p[2], p[5], p[7], p[9], p[10])
+    # print(p[0])
+
 # ======================================================
 
 def p_wlist(p):

@@ -16,9 +16,10 @@ keywords =('BEGIN',
      'END', 'PROGRAM', 'WRITELN', 
      'VAR', 
     'IF','ELSE' ,'THEN', 
-    # 'FOR','DO', 
+    'FOR','DO', 'TO',
     'WRITE', 
     'DATA',
+    'MOD'
     # 'BLANK'
     )
 
@@ -42,7 +43,7 @@ t_ignore = ' \t'
 def t_ID(t):
     r'[A-Za-z][A-Za-z0-9]*'
     if t.value.upper() in keywords:
-        t.type = t.value
+        t.type = t.value.upper()
     return t
 
 def t_PROGRAM(t):
