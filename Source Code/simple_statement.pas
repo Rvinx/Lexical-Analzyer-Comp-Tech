@@ -1,4 +1,0 @@
-PROGRAM HELLOWORLD;
-BEGIN
-WRITELN('Hello, world!');
-END.
