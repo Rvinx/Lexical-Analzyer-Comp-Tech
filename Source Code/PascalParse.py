@@ -7,7 +7,6 @@ precedence = (
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
     ('left', 'POWER'),
-    # ('right', 'UMINUS')
 )
 
 # PASCAL dictionary
