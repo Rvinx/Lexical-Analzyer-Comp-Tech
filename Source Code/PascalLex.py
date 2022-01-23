@@ -10,7 +10,6 @@
 from ply import *
 
 keywords =('BEGIN', 
-    # 'End' ,
      'END', 'PROGRAM', 'WRITELN', 
      'VAR', 
     'IF','ELSE' ,'THEN', 
@@ -38,13 +37,9 @@ tokens =keywords +(
 t_ignore = ' \t'
 
 def t_ID(t):
-    r'[A-Za-z][A-Za-z0-9]*'
+    r'[A-Za-z_][A-Za-z0-9_]*'
     if t.value.upper() in keywords:
         t.type = t.value.upper()
-    return t
-
-def t_PROGRAM(t):
-    r'PROGRAM .*'
     return t
 
 t_EQUALS = r'='
