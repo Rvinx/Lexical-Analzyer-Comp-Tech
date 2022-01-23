@@ -176,6 +176,7 @@ def p_variable(p):
     '''variable : ID'''
     p[0] = p[1]
 
+# END PROGRAM
 def p_command_end(p):
     '''command : END DOT'''
     p[0] = ('END', p[2])

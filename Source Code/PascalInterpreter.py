@@ -245,6 +245,9 @@ class PascalInterpreter:
 
                 # Jika flag 1, looping berhenti dan lompat ke baris end
                 elif flag == 1:
+                    newval = 0
+                    initial_flag = 0
+                    flag = 0
                     newline = int(instr[3])
                     self.goto(newline)
                     continue
