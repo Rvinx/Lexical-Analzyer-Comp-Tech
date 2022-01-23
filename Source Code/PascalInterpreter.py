@@ -1,7 +1,14 @@
+# Group 4
+# 2301879671 - Aurelius Elvin#
+# 2301856932 - Nicholas Enrico
+# 2301871385 - Merlyn Febriany
+# 2301867633 - I Made Yoga Mahendra
+# 2301892704 - Jason
+# 2301868812 - Jenifer Valen Lesmana
+# 
+
 from genericpath import exists
 import sys
-import math
-import random
 from typing import final
 
 class PascalInterpreter:
@@ -30,7 +37,7 @@ class PascalInterpreter:
             print("END IS NOT LAST")
             self.error = 1
 
-    # Evaluate an expression line 69
+    # Untuk arithmetical expression
     def eval(self, expr):
         etype = expr[0]
         if etype == 'NUM':
@@ -57,12 +64,11 @@ class PascalInterpreter:
                         (var, self.stat[self.pc]))
                 raise RuntimeError
 
-    # Evaluate a relational expression line 126
+    # Untuk if expression
     def releval(self, expr):
         etype = expr[1]
         lhs = self.eval(expr[2])
         rhs = self.eval(expr[3])
-        # print(lhs, etype, rhs)
         if etype == '<':
             if lhs < rhs:
                 return 1
@@ -75,7 +81,6 @@ class PascalInterpreter:
                 return 0
 
         elif etype == '>':
-            # print(lhs)
             if lhs > rhs:
                 return 1
             else:
@@ -99,13 +104,10 @@ class PascalInterpreter:
             else:
                 return 0
 
-    # Assignment line 167
+    # Assignment variable
     def assign(self, target, value):
-        # print(target, value)
         var = target
-        # print(var)
         self.vars[var] = self.eval(value)
-        # print(self.vars[var])
 
 
     # Change the current line number

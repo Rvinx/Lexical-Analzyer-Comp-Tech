@@ -1,3 +1,12 @@
+# Group 4
+# 2301879671 - Aurelius Elvin#
+# 2301856932 - Nicholas Enrico
+# 2301871385 - Merlyn Febriany
+# 2301867633 - I Made Yoga Mahendra
+# 2301892704 - Jason
+# 2301868812 - Jenifer Valen Lesmana
+# 
+
 from ply import *
 import PascalLex
 
@@ -14,7 +23,6 @@ precedence = (
 def p_program(p):
     '''program : program statement
                | statement'''
-    # print('asdfasfda')
     if len(p) == 2 and p[1]:
         p[0] = {}
         line, stat = p[1]
@@ -30,21 +38,17 @@ def p_program(p):
 # catch error
 def p_program_error(p):
     '''program : error'''
-    # print('error')
     p[0] = None
     p.parser.error = 1
 
-# Some Pascal Statement
+# Some Pascal Statement, penerjemahan syntax dibantu oleh linenumber berupa integer di awal
 def p_statement(p):
     '''statement : INTEGER command NEWLINE'''
-    # print('asdfasdfa')
     if isinstance(p[2], str):
         print("%s %s %s" % (p[2], "AT LINE", p[1]))
         p[0] = None
         p.parser.error = 1
-        # print('asdfasdf')
     else:
-        # print('asdfasdf')
         lineno = int(p[1])
         p[0] = (lineno, p[2])
 
@@ -56,7 +60,7 @@ def p_statement_bad(p):
     p[0] = None
     p.parser.error = 1
 
-# B line
+# Blank line
 def p_statement_newline(p):
     '''statement : NEWLINE'''
     p[0] = None
@@ -80,7 +84,6 @@ def p_command_data_bad(p):
 def p_command_writeln(p):
     '''command : WRITELN LPAREN wlist RPAREN ending'''
     p[0] = ('WRITELN', p[3], p[5])
-    # print(p[3])
 
 def p_command_writeln_bad(p):
     '''command : WRITELN error'''
@@ -94,7 +97,6 @@ def p_command_writeln_empty(p):
 def p_command_write(p):
     '''command : WRITE LPAREN wlist RPAREN ending'''
     p[0] = ('WRITE', p[3], p[5])
-    # print(p[3])
 
 def p_command_write_bad(p):
     '''command : WRITE error'''
@@ -111,7 +113,6 @@ def p_command_write_empty(p):
 def p_command_program(p):
     '''command : PROGRAM variable ending'''
     p[0] = ('PROGRAM', p[2], p[3])
-    # print(p[0])
 # ======================================================
 
 # ======================================================
@@ -120,7 +121,6 @@ def p_command_program(p):
 def p_command_var(p):
     '''command : VAR varlist COLON variable ending'''
     p[0] = ('VAR', p[2], p[4], p[5])
-    # print(p[3])
 
 def p_command_var_error(p):
     '''command : VAR error'''
@@ -130,7 +130,6 @@ def p_command_var_error(p):
 def p_command_declare(p):
     '''command : variable COLON variable ending'''
     p[0] = ('', p[1], p[3], p[4])
-    # print(p[3])
 
 def p_command_declare_error(p):
     '''command : variable error'''
@@ -140,7 +139,6 @@ def p_command_declare_error(p):
 def p_command_assign(p):
     '''command : variable COLON EQUALS expr SEMI'''
     p[0] = ('ASSIGN',p[1], p[4])
-    # print(p[0])
 
 def p_command_varlist(p):
     '''varlist : varlist COMMA variable
@@ -180,17 +178,14 @@ def p_variable(p):
 def p_command_end(p):
     '''command : END DOT'''
     p[0] = ('END', p[2])
-    # print(p[0])
 
 def p_command_begin(p):
     '''command : BEGIN'''
     p[0] = ('BEGIN',)
-    # print(p[0])
 
 # end of statement
 def p_ending(p):
     '''ending : SEMI'''
-    # print('asdfasd')
     p[0] = p[1]
 
 # ======================================================
@@ -199,7 +194,6 @@ def p_ending(p):
 def p_command_if(p):
     '''command : IF LPAREN relexpr RPAREN THEN INTEGER INTEGER'''
     p[0] = ('IF', p[3], p[6], p[7])
-    # print(p[0])
 
 def p_command_if_bad(p):
     '''command : IF LPAREN error RPAREN THEN INTEGER INTEGER'''
@@ -212,7 +206,6 @@ def p_command_if_bad2(p):
 def p_command_else(p):
     '''command : ELSE'''
     p[0] = ('ELSE',)
-    # print(p[0])
 
 def p_command_endelseif(p):
     '''command : END ending'''
@@ -243,7 +236,6 @@ def p_relexpr(p):
 def p_command_for(p):
     '''command : FOR variable COLON EQUALS expr TO expr DO INTEGER INTEGER'''
     p[0] = ('FOR', p[2], p[5], p[7], p[9], p[10])
-    # print(p[0])
 
 # ======================================================
 
@@ -253,26 +245,18 @@ def p_wlist(p):
     if len(p) > 3:
         p[0] = p[1]
         p[0].append(p[3])
-        # print(p[0])
     else:
-        # print('asd')
         p[0] = [p[1]]
-        # print(p[0])
 
 def p_item_string(p):
     '''witem : STRING'''
-    # print('sadfasdfa')
     p[0] = (p[1][1:-1], None)
-    # print(p[1][1:-1])
 
 def p_item_expr(p):
     '''witem : expr'''
     p[0] = ("", p[1])
 
-# diline 444
-# def w_item_string_expr(p):
-
-# Builds a list of numbers as a Python list
+# Array of number
 
 def p_numlist(p):
     '''numlist : numlist COMMA number
@@ -284,37 +268,21 @@ def p_numlist(p):
     else:
         p[0] = [p[1]]
 
-# A number. May be an integer or a float
-
-
+# Number berupa tipe data integer dan float
 def p_number(p):
     '''number  : INTEGER
                | FLOAT'''
     p[0] = eval(p[1])
 
-# def p_empty(p):
-#     '''empty : '''
-
 def p_error(p):
-    # print(p)
     if not p:
         print("SYNTAX ERROR NOT EOF")
-        # None
     
 pparser = yacc.yacc()
 
 def parse(data, debug=0):
-    # print()
-    # data.split('\n')
-    # print(data)
-    # for i in data:
-    #     print(i)
-    # print("pass")
     pparser.error = 0
     p = pparser.parse(data, debug=debug)
-    # print('sadf')
     if pparser.error:
-        # print(pparser.error)
         return None
-    # print(p)
     return p

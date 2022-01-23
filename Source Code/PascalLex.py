@@ -9,8 +9,6 @@
 
 from ply import *
 
-# SIMPLE LOOPING WITH CONDITIONAL IF BLOCK WITH PLY
-
 keywords =('BEGIN', 
     # 'End' ,
      'END', 'PROGRAM', 'WRITELN', 
@@ -19,8 +17,7 @@ keywords =('BEGIN',
     'FOR','DO', 'TO',
     'WRITE', 
     'DATA',
-    'MOD'
-    # 'BLANK'
+    'MOD',
     )
 
 tokens =keywords +(
@@ -49,10 +46,6 @@ def t_ID(t):
 def t_PROGRAM(t):
     r'PROGRAM .*'
     return t
-
-# def t_space(t):
-#     r'\ '
-#     pass
 
 t_EQUALS = r'='
 t_PLUS = r'\+'
