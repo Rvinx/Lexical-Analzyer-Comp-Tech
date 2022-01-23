@@ -10,7 +10,6 @@
 import sys
 sys.path.insert(0, "../..")
 
-import PascalLex
 import PascalParse
 import PascalInterpreter
 
