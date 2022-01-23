@@ -1,5 +1,5 @@
 # Group 4
-# 2301879671 - Aurelius Elvin#
+# 2301879671 - Aurelius Elvin
 # 2301856932 - Nicholas Enrico
 # 2301871385 - Merlyn Febriany
 # 2301867633 - I Made Yoga Mahendra
@@ -176,7 +176,7 @@ def p_variable(p):
     '''variable : ID'''
     p[0] = p[1]
 
-# END PROGRAM
+# END STATEMENT
 def p_command_end(p):
     '''command : END DOT'''
     p[0] = ('END', p[2])
@@ -240,7 +240,7 @@ def p_command_for(p):
     p[0] = ('FOR', p[2], p[5], p[7], p[9], p[10])
 
 # ======================================================
-
+# wlist grammar
 def p_wlist(p):
     '''wlist   : wlist COMMA witem
                | witem'''

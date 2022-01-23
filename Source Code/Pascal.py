@@ -1,5 +1,5 @@
 # Group 4
-# 2301879671 - Aurelius Elvin#
+# 2301879671 - Aurelius Elvin
 # 2301856932 - Nicholas Enrico
 # 2301871385 - Merlyn Febriany
 # 2301867633 - I Made Yoga Mahendra
